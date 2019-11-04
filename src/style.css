@@ -1,6 +1,3 @@
-import { createGlobalStyle } from 'styled-components';
-/*reset.css 各种浏览器适配初始样式*/
-export const GrobalStyle = createGlobalStyle `
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -14,9 +11,9 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
+	margin: 0rem;
+	padding: 0rem;
+	border: 0rem;
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
@@ -27,7 +24,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+	line-height: 1rem;
 }
 ol, ul {
 	list-style: none;
@@ -42,7 +39,31 @@ q:before, q:after {
 }
 table {
 	border-collapse: collapse;
-	border-spacing: 0;
+	border-spacing: 0rem;
 }
-`;
+
+/* font */
+
+@font-face {
+    font-family: 'webfont';
+    font-display: swap;
+    src: url('./static/font/webfont.eot'); /* IE9 */
+    src: url('./static/font/webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('./static/font/webfont.woff2') format('woff2'),
+    url('./static/font/webfont.woff') format('woff'), /* chrome、firefox */
+    url('./static/font/webfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('./static/font/webfont.svg#webfont') format('svg'); /* iOS 4.1- */
+}
+
+.web-font {
+    font-family: "webfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* icons */
+
+
+
 

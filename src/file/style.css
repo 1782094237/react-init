@@ -1,0 +1,63 @@
+.file-button{
+  float:right;
+  overflow: hidden;
+}
+
+.up-file{
+  margin-right: 1rem;
+  cursor: pointer;
+  padding: 0 1.3rem !important;
+  border: 1px solid #202d40 !important;
+  background-color: #202d40 !important;
+}
+
+.up-file:hover{
+  opacity: 0.8;
+}
+
+.file-name{
+  margin-top:5rem;
+  padding-bottom:0.5rem;
+  font-size: 0.8rem;
+  color:black !important;
+  -webkit-box-shadow:0 12px 10px -7px rgba(32,45,64,.2);
+  box-shadow:0 12px 10px -7px rgba(32,45,64,.2);
+  text-align: left !important;
+}
+
+.file-content{
+  margin-top:1.5rem;
+  font-size: 0.8rem;
+  color:black !important;
+  text-align: left !important;
+}
+
+.file-icon{
+  overflow: hidden;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  fill: currentColor;
+}
+
+.file-icon2{
+  overflow: hidden;
+  width: 1.75rem !important;
+  height: 2.19rem !important;
+  fill: currentColor;
+}
+
+.file-item{
+  display: flex !important;
+  align-content: center;
+  font-size: 0.9rem;
+  line-height: 2.8rem;
+  color:#202D40 !important;
+}
+
+.file-text{
+  display: inline;
+  font-size: 0.9rem;
+  padding-left: 0.5rem;
+  line-height: 2.8rem;
+  color:#202D40 !important;
+}
