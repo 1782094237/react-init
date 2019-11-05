@@ -13,11 +13,88 @@
       "unicode_decimal": 59018
     },
     {
+      "icon_id": "1973130",
+      "name": "文件夹",
+      "font_class": "folder__easyi",
+      "unicode": "e515",
+      "unicode_decimal": 58645
+    },
+    {
       "icon_id": "1973697",
       "name": "文件上传",
       "font_class": "wenjianshangchuan",
       "unicode": "e614",
       "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "2207108",
+      "name": "file_excel_office",
+      "font_class": "file_excel_office",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
+      "icon_id": "2207111",
+      "name": "file_music",
+      "font_class": "file_music",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    },
+    {
+      "icon_id": "2207114",
+      "name": "file_pic",
+      "font_class": "file_pic",
+      "unicode": "e6bf",
+      "unicode_decimal": 59071
+    },
+    {
+      "icon_id": "2207115",
+      "name": "file_ppt_office",
+      "font_class": "file_ppt_office",
+      "unicode": "e6c0",
+      "unicode_decimal": 59072
+    },
+    {
+      "icon_id": "2207116",
+      "name": "file_pdf",
+      "font_class": "file_pdf",
+      "unicode": "e6c1",
+      "unicode_decimal": 59073
+    },
+    {
+      "icon_id": "2207117",
+      "name": "file_txt",
+      "font_class": "file_txt",
+      "unicode": "e6c2",
+      "unicode_decimal": 59074
+    },
+    {
+      "icon_id": "2207118",
+      "name": "file_video",
+      "font_class": "file_video",
+      "unicode": "e6c3",
+      "unicode_decimal": 59075
+    },
+    {
+      "icon_id": "2207119",
+      "name": "file_unknown",
+      "font_class": "file_unknown",
+      "unicode": "e6c4",
+      "unicode_decimal": 59076
+    },
+    {
+      "icon_id": "2207120",
+      "name": "file_word_office",
+      "font_class": "file_word_office",
+      "unicode": "e6c5",
+      "unicode_decimal": 59077
+    },
+    {
+      "icon_id": "2207121",
+      "name": "file_zip",
+      "font_class": "file_zip",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
     },
     {
       "icon_id": "2295974",
@@ -39,6 +116,48 @@
       "font_class": "tupian",
       "unicode": "e60f",
       "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "5922915",
+      "name": "video",
+      "font_class": "video1",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "5922916",
+      "name": "picture",
+      "font_class": "picture",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "5922918",
+      "name": "word",
+      "font_class": "word",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "5922921",
+      "name": "ppt",
+      "font_class": "ppt",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "5922929",
+      "name": "excel",
+      "font_class": "excel",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "5922931",
+      "name": "pdf",
+      "font_class": "pdf",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
     },
     {
       "icon_id": "7119846",
@@ -177,36 +296,36 @@
       "icon_id": "11420388",
       "name": "un-message-o",
       "font_class": "un-message-o",
-      "unicode": "e6bd",
-      "unicode_decimal": 59069
+      "unicode": "e6c7",
+      "unicode_decimal": 59079
     },
     {
       "icon_id": "11421345",
       "name": "un-collapse-o",
       "font_class": "un-collapse-o",
-      "unicode": "e6c0",
-      "unicode_decimal": 59072
+      "unicode": "e6c8",
+      "unicode_decimal": 59080
     },
     {
       "icon_id": "11421346",
       "name": "un-forward-o",
       "font_class": "un-forward-o",
-      "unicode": "e6c1",
-      "unicode_decimal": 59073
+      "unicode": "e6c9",
+      "unicode_decimal": 59081
     },
     {
       "icon_id": "11421347",
       "name": "un-return-o",
       "font_class": "un-return-o",
-      "unicode": "e6c2",
-      "unicode_decimal": 59074
+      "unicode": "e6ca",
+      "unicode_decimal": 59082
     },
     {
       "icon_id": "11421348",
       "name": "un-dropdown-o",
       "font_class": "un-dropdown-o",
-      "unicode": "e6c3",
-      "unicode_decimal": 59075
+      "unicode": "e6cb",
+      "unicode_decimal": 59083
     },
     {
       "icon_id": "11446442",
@@ -218,28 +337,28 @@
     {
       "icon_id": "11447563",
       "name": "ppt3",
-      "font_class": "ppt",
+      "font_class": "ppt1",
       "unicode": "e805",
       "unicode_decimal": 59397
     },
     {
       "icon_id": "11447564",
       "name": "excel3",
-      "font_class": "excel",
+      "font_class": "excel1",
       "unicode": "e806",
       "unicode_decimal": 59398
     },
     {
       "icon_id": "11447565",
       "name": "word3",
-      "font_class": "word",
+      "font_class": "word1",
       "unicode": "e807",
       "unicode_decimal": 59399
     },
     {
       "icon_id": "11447566",
       "name": "pdf3",
-      "font_class": "pdf",
+      "font_class": "pdf1",
       "unicode": "e808",
       "unicode_decimal": 59400
     },

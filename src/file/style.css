@@ -1,6 +1,7 @@
 .file-button{
   float:right;
   overflow: hidden;
+  width:20rem;
 }
 
 .up-file{
@@ -9,6 +10,10 @@
   padding: 0 1.3rem !important;
   border: 1px solid #202d40 !important;
   background-color: #202d40 !important;
+}
+
+.up-file span{
+  color: white !important;
 }
 
 .up-file:hover{
@@ -34,30 +39,30 @@
 
 .file-icon{
   overflow: hidden;
-  width: 2.5rem !important;
-  height: 2.5rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
   fill: currentColor;
+  margin-right: 0.8rem;
 }
 
-.file-icon2{
-  overflow: hidden;
-  width: 1.75rem !important;
-  height: 2.19rem !important;
-  fill: currentColor;
-}
+
 
 .file-item{
   display: flex !important;
   align-content: center;
   font-size: 0.9rem;
-  line-height: 2.8rem;
+  line-height: 2.2rem;
   color:#202D40 !important;
 }
 
-.file-text{
-  display: inline;
-  font-size: 0.9rem;
-  padding-left: 0.5rem;
-  line-height: 2.8rem;
-  color:#202D40 !important;
+.file-sub{
+  padding: 1rem 0 1rem 1rem !important;
+  border-bottom: 1px solid #dadfe6;
 }
+
+.file-sub:hover{
+  background:rgba(218,223,230,.3);
+  cursor:pointer;
+}
+
+

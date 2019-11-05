@@ -168,9 +168,9 @@ z-index: 999;
   font-size:1.1rem;
 }
 
-span{
-  color:white !important;
-}
+/* span{
+  color:white ;
+} */
 
 .main-item{
   color:white !important;

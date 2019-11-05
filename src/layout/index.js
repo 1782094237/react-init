@@ -19,12 +19,24 @@ class Lay extends Component{
   getItem(){
     let content = null;
     switch(this.props.itemNumber){
-      case '1': content = (
+      case '5': content = (
+        <File fileId='1'></File>
+      );
+      break;
+      case '6': content = (
         <File></File>
       );
       break;
-      case '2': content = (
-        <div>22</div>
+      case '7': content = (
+        <File></File>
+      );
+      break;
+      case '8': content = (
+        <File></File>
+      );
+      break;
+      case '9': content = (
+        <File></File>
       );
       break;
       default: content = null;
