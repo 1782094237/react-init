@@ -1,3 +1,91 @@
 {
-  "a":"1"
+  "file": [
+    {
+      "date": "2019-11-15T12:17:57.000+0000",
+      "creator": "测试",
+      "file": [
+        {
+          "date": "2019-11-15T12:17:57.000+0000",
+          "creator": "测试",
+          "src": "",
+          "name": "文件1.1",
+          "id": 3,
+          "type": "文件"
+        },
+        {
+          "date": "2019-11-15T12:17:57.000+0000",
+          "creator": "测试",
+          "file": [
+            {
+              "date": "2019-11-03T12:23:21.000+0000",
+              "creator": "测试",
+              "file": [],
+              "name": "文件夹1.1.1",
+              "id": 5,
+              "type": "文件夹"
+            }
+          ],
+          "name": "文件夹1.1",
+          "id": 4,
+          "type": "文件夹"
+        }
+      ],
+      "name": "文件夹1",
+      "id": 1,
+      "type": "文件夹"
+    },
+    {
+      "date": "2019-11-15T12:17:57.000+0000",
+      "creator": "测试",
+      "file": [
+        {
+          "date": "2019-11-03T08:17:52.000+0000",
+          "creator": "测试",
+          "file": [
+            {
+              "date": "2019-11-04T09:17:20.000+0000",
+              "creator": "测试",
+              "file": [],
+              "name": "要删除的文件夹1",
+              "id": 7,
+              "type": "文件夹"
+            }
+          ],
+          "name": "文件夹2.1",
+          "id": 6,
+          "type": "文件夹"
+        }
+      ],
+      "name": "文件夹2",
+      "id": 2,
+      "type": "文件夹"
+    },
+    {
+      "date": "2019-11-04T06:27:03.000+0000",
+      "creator": "测试",
+      "size": "365.84375kb",
+      "src": "http://localhost:8080/stuFiles/team1/item1/b1c53cd2ad23411b80c5060b35c84c87_第七史诗.jpg",
+      "name": "第七史诗.jpg",
+      "id": 23,
+      "type": "文件"
+    },
+    {
+      "date": "2019-11-05T08:15:06.000+0000",
+      "creator": "测试",
+      "size": "0.19140625kb",
+      "src": "http://localhost:8080/stuFiles/team1/item1/114fa2c862894932af3fb74e2719c764_.bash_history",
+      "name": ".bash_history.doc",
+      "id": 24,
+      "type": "文件"
+    },
+    {
+      "date": "2019-11-05T08:15:06.000+0000",
+      "creator": "测试",
+      "size": "0.19140625kb",
+      "src": "http://localhost:8080/stuFiles/team1/item1/114fa2c862894932af3fb74e2719c764_.bash_history",
+      "name": "bash_history.docx",
+      "id": 25,
+      "type": "文件"
+    }
+  ]
 }

@@ -24,19 +24,19 @@ class Lay extends Component{
       );
       break;
       case '6': content = (
-        <File></File>
+        <File fileId='2'></File>
       );
       break;
       case '7': content = (
-        <File></File>
+        <File fileId='3'></File>
       );
       break;
       case '8': content = (
-        <File></File>
+        <File fileId='4'></File>
       );
       break;
       case '9': content = (
-        <File></File>
+        <File fileId='5'></File>
       );
       break;
       default: content = null;
@@ -66,7 +66,7 @@ class Lay extends Component{
 
     return(
       <Layout >
-        <div className = "container  web-font">
+        <div className = "lay-container  web-font">
           <div className = "home-container">
             <svg className="home-icon" aria-hidden="true">
                 <use xlinkHref="#icon-shouye1"></use>
