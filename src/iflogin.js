@@ -7,6 +7,8 @@ require('./static/icons/iconfont.js')
 class IfLogin extends Component {
 
   getCookie(name){
+    console.log("###################")
+    console.log(document.cookie)
     if (document.cookie.length>0)
     {
       let start=document.cookie.indexOf(name + "=")//返回某指定值在字符串中首次出现的位置。

@@ -2,9 +2,10 @@ import React,{ Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import './style.css';
 import axios from 'axios';
+import qs from 'qs';
 import { actionCreator } from '../layout/store';
 import './style.css';
-import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message } from 'antd';
+import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input } from 'antd';
 import {fromJS, toJS, getIn} from 'immutable';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
@@ -14,11 +15,18 @@ import 'antd/dist/antd.css';
 import Axios from 'axios';
 moment.locale('zh-cn');
 
+const { confirm } = Modal;
+
 let fatherId =0;
 class File extends Component{
-  componentDidMount(){
+
+  uploadNew(){
+    fatherId = 0;
     const that = this;
-    axios.get('/mock.json')
+    axios.post('http://27y6v05022.wicp.vip:40292/files/allFiles',qs.stringify({
+      item: that.props.fileId,
+    }),{withCredentials:true}
+    )
     .then(function(response){
       console.log(response.data.file[0].file)
       that.props.handleSetFile(fromJS(response.data.file))
@@ -29,14 +37,50 @@ class File extends Component{
     })
   }
 
-  download(){
+  componentDidMount(){
+    this.uploadNew()
+    // fatherId = 0;
+    // const that = this;
+    // axios.post('http://27y6v05022.wicp.vip:40292/files/allFiles',qs.stringify({
+    //   item: that.props.fileId,
+    // }),
+    // {withCredentials:true}
+    // )
+    // .then(function(response){
+    //   console.log(response.data.file[0].file)
+    //   that.props.handleSetFile(fromJS(response.data.file))
+    //   that.props.handleSetShowFile(fromJS(response.data.file))
+    // })
+    // .catch(function(err){
+    //   console.log(err)
+    // })
+  }
+
+  download(src,name){
     //下载文件
     console.log("开始下载")
     var a = document.createElement('a');
-    a.href = 'url';
-    a.download = 'filename';
+    a.href = src;
+    a.download = name;
     a.click();
   }
+
+  view(src){
+    let url = 'https://view.officeapps.live.com/op/view.aspx?src='+src;
+    window.open(url,'_blank');
+  }
+
+  // getView(type){
+  //   if(type == "文件"){
+  //     return (
+  //       <Fragment>
+
+  //       </Fragment>
+  //     )
+  //   }else{
+  //     return null;
+  //   }
+  // }
 
   getIcon(name,type){
     if(type == '文件夹'){
@@ -139,7 +183,6 @@ class File extends Component{
         )
       }
     }
-
   }
   getData(){
     let array = this.props.showFile;
@@ -162,9 +205,14 @@ class File extends Component{
         <Col span={3}></Col>
         <Col span={3}></Col>
         <Col span={3}> </Col>
-        <Col span={3}> </Col>
-        <Col span={3}> </Col>
-        <Col className="file-item" span={3}>{array.getIn([i,'creator'])}</Col>
+        <Col onClick={this.view.bind(this,array.getIn([i,'src']))} span={3}> <Icon type="eye" /></Col>
+        <Col onClick={this.download.bind(this,array.getIn([i,'src']),array.getIn([i,'name']))} span={3}>
+          <Icon type="arrow-down" /> 
+        </Col>
+        <Col className="file-item" span={3}>
+          {array.getIn([i,'creator'])}
+        </Col>
+        {/* {this.getView(array.getIn([i,'type']))} */}
         <Col className="file-item" span={3}>{array.getIn([i,'date'])}</Col>
       </Row>
       )
@@ -179,6 +227,7 @@ class File extends Component{
         if(array.getIn([i,'type']) == '文件夹'){
 //点击文件夹
           this.props.handleSetShowFile(array.getIn([i,'file']))
+          fatherId = i;
         }else{
 //点击文件
 
@@ -187,18 +236,43 @@ class File extends Component{
     }
   }
 
+ newFloder(){
+   let that = this;
+  confirm({
+    title: '请输入文件夹名称',
+    content: <div><br/><Input id="floder" placeholder="Basic usage" /></div>,
+    onOk() {
+      console.log("执行")
+      axios.post('http://27y6v05022.wicp.vip:40292/files/newFolder',qs.stringify({
+        item: that.props.fileId,
+        fatherId:'1',
+        folderName:document.getElementById('floder').value
+      }),{withCredentials:true}
+      )
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    onCancel() {},
+  });
+ }
+
 
 
   render() {
     //后端 文件上传接口
     console.log(this.props.fileId)
+    const that = this;
     const props = {
-      name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      name: 'upload',
+      action: 'http://27y6v05022.wicp.vip:40292/files/upload',
       withCredentials:'true',
       data:{
         itemId:this.props.fileId,
-        fatherId:''
+        fatherId:'1'
       },
       // headers: {
       //   authorization: 'authorization-text',
@@ -210,7 +284,9 @@ class File extends Component{
         if (info.file.status === 'done') {
           console.log("完成")
           message.success(`${info.file.name} file uploaded successfully`);
+          that.uploadNew()
         } else if (info.file.status === 'error') {
+          console.log("失败")
           message.error(`${info.file.name} file upload failed.`);
         }
       },
@@ -225,7 +301,7 @@ class File extends Component{
               <Button style={{display:'inline'}} className="up-file" type="primary">上传文件</Button>
             </Upload>
           </Col>
-          <Col span="12"><Button  className="up-file">新建文件夹</Button></Col>
+          <Col span="12"><Button onClick={this.newFloder.bind(this)}  className="up-file">新建文件夹</Button></Col>
         </Row>
       </div>
       <div className="file-name">
@@ -234,8 +310,8 @@ class File extends Component{
             <Col span={3}></Col>
             <Col span={3}></Col>
             <Col span={3}> </Col>
-            <Col span={3}> </Col>
-            <Col span={3}> </Col>
+            <Col span={3}>预览</Col>
+            <Col span={3}>下载</Col>
             <Col span={3}>创建者</Col>
             <Col span={3}>更新日期</Col>
         </Row>

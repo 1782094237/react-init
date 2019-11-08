@@ -13,8 +13,8 @@ class App extends Component {
     return(
       <Fragment>
         <Provider store = { store }>
-          {/* <IfLogin /> */}
-          <Lay />
+          <IfLogin />
+          {/* <Lay /> */}
           {/* <BrowserRouter>
               <Fragment>
                 <Route path = '/' exact component={Home}></Route>

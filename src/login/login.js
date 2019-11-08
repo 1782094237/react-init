@@ -1,8 +1,9 @@
-import React,{ Component, Fragment } from 'react';
+import React,{ Component, Fragment,PureComponent } from 'react';
 import { connect } from "react-redux";
 import axios from 'axios'
 import { actionCreator } from '../layout/store';
 import './style.css';
+import qs from 'qs'
 import { Layout, Menu, Button, Dropdown, Icon,Form, Input, Checkbox, Modal } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
@@ -35,9 +36,9 @@ class LoginForm extends Component{
             userPassword:values.password
           }
         }        
-        axios.post('http://localhost:8080/login',postData)
+        axios.post('http://27y6v05022.wicp.vip:40292/login',qs.stringify(postData),{withCredentials:true})
         .then(function(response){
-          if(response.data.key == 0 && response.data.errorInfo == "请输入邮箱"){
+          if(response.data.key == 0 && response.data.errorInfo == "请输入邮箱以激活账号"){
             console.log(response)
             //激活
                       confirm({
