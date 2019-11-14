@@ -45,6 +45,16 @@
   margin-right: 0.8rem;
 }
 
+.file-stack{
+  float:left;
+  color: block;
+  margin-top:3rem;
+  margin-left:1rem;
+  color:black;
+  font-size:0.8rem;
+  font-weight: 500;
+}
+
 
 
 .file-item{
@@ -64,5 +74,18 @@
   background:rgba(218,223,230,.3);
   cursor:pointer;
 }
+
+.file-back{
+
+}
+
+.file-back:last-child{
+  color:black;
+}
+
+/* .file-back:after{
+  content:"  <  ";
+  color:black;
+} */
 
 

@@ -19,7 +19,17 @@
             {
               "date": "2019-11-03T12:23:21.000+0000",
               "creator": "测试",
-              "file": [],
+              "file": [
+                {
+                  "date": "2019-11-04T06:27:03.000+0000",
+                  "creator": "测试",
+                  "size": "365.84375kb",
+                  "src": "./mock.json",
+                  "name": "第七史诗.jpg",
+                  "id": 278,
+                  "type": "文件"
+                }
+              ],
               "name": "文件夹1.1.1",
               "id": 5,
               "type": "文件夹"
@@ -64,7 +74,7 @@
       "date": "2019-11-04T06:27:03.000+0000",
       "creator": "测试",
       "size": "365.84375kb",
-      "src": "http://localhost:8080/stuFiles/team1/item1/b1c53cd2ad23411b80c5060b35c84c87_第七史诗.jpg",
+      "src": "./mock.json",
       "name": "第七史诗.jpg",
       "id": 23,
       "type": "文件"

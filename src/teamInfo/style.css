@@ -1,0 +1,35 @@
+.info-box{
+  border: 1px solid #dadfe6;
+  border-radius: 0.125rem;
+  padding:1rem;
+  text-align: left !important;
+  font-size: 1rem;
+  font-weight: 700;
+  min-height:30vh;
+  margin-bottom: 2rem;
+}
+
+.info-left{
+  text-align: left !important;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.info-title{
+  
+}
+
+.info-name{
+  font-size: .9rem;
+
+}
+
+.info-ident{
+  font-weight: 500 !important;
+  color:white !important;
+  width:5rem;
+  text-align: center;
+  font-size: .9rem;
+  background: rgb(255, 174, 13);
+}
+

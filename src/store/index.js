@@ -2,6 +2,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import reducer from './reducer';
 import thunk from 'redux-thunk';
 
+import * as actionTypes from './actionTypes';
+import * as actionCreator from './actionCreator';
+
 const composeEnhancers =
   typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
@@ -16,3 +19,4 @@ const enhancer = composeEnhancers(
 const store = createStore(reducer, enhancer);
 
 export default store;
+export { actionTypes, actionCreator };

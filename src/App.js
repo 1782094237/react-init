@@ -1,12 +1,19 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import store from './store';
 import { Provider } from 'react-redux';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import store from './store';
+
+import './style.css';
+
+
 import IfLogin from './iflogin';
 import Lay from './layout'
-import './style.css';
-import { isLogicalExpression } from '@babel/types';
+
 require('./static/icons/iconfont.js')
+
+localStorage.api = "http://27y6v05022.wicp.vip:40292/";
+console.log(localStorage.api)
 class App extends Component {
 
   render(){

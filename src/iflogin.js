@@ -1,13 +1,15 @@
-import React, { Fragment, Component } from 'react';
-import { connect } from "react-redux";
-import Lay from './layout';
-import Login from './login/login.js'
-import { actionCreator } from './layout/store/index'
-require('./static/icons/iconfont.js')
+import React, { Fragment, Component } from 'react'
+import { connect } from "react-redux"
+
+import { actionCreator } from './store'
+
+import Lay from './layout'
+import Login from './login'
+
+
 class IfLogin extends Component {
 
   getCookie(name){
-    console.log("###################")
     console.log(document.cookie)
     if (document.cookie.length>0)
     {
@@ -44,7 +46,7 @@ class IfLogin extends Component {
 
 const mapStateToProps = (state) => {
   return ({
-    login:state.getIn(['header','login'])
+    login:state.getIn(['login'])
   })
 }
 

@@ -1,14 +1,21 @@
 import React,{ Component, Fragment } from 'react';
-import File from '../file/file';
 import { connect } from "react-redux";
-import { actionCreator } from './store';
+import { actionCreator } from '../store';
+
 import './style.css';
+
+import File from '../file';
+
+import TeamInfo from '../teamInfo';
+
+
 import { Layout, Menu, Button, Dropdown, Icon } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
+import teamInfo from '../teamInfo';
 moment.locale('zh-cn');
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -37,6 +44,10 @@ class Lay extends Component{
       break;
       case '9': content = (
         <File fileId='5'></File>
+      );
+      break;
+      case '10': content = (
+        <TeamInfo />
       );
       break;
       default: content = null;
@@ -88,7 +99,7 @@ class Lay extends Component{
             </Dropdown>
             <Dropdown overlay={menu}>          
               <div className = "right-item2">
-                <div className="round">
+                <div className="lay-round">
                   方硕                
                 </div>
                 <svg className="right-icon2" aria-hidden="true">
@@ -100,11 +111,11 @@ class Lay extends Component{
         </div>
         </div>
       <Sider
-        className="sider"
+        className="lay-sider"
       >
 
         <Menu style={{background:'#202d40'}}  theme="dark" mode="inline" onClick={this.props.handleSelectItem.bind(this)} defaultOpenKeys={['sub1','sub2','sub3']} defaultSelectedKeys={['10']}>
-          <Menu.Item key = '0' className="group">
+          <Menu.Item key = '0' className="lay-group">
               <svg className="group-icon" aria-hidden="true">
                 <use xlinkHref="#icon-dateboard"></use>
               </svg>
@@ -168,7 +179,7 @@ class Lay extends Component{
 
         
         <Header style={{  background: '#fff', padding: 0, height:"3rem" }} />
-        <Content style={{ marginLeft:'15rem', background:'#fff',overflow: 'initial',flexGrow:'1'}}>
+        <Content style={{  background:'#fff',overflow: 'initial',flexGrow:'1'}}>
           <div style={{padding: '1.5rem', textAlign: 'center'}}>
             {this.getItem()}
           </div>
@@ -183,7 +194,7 @@ class Lay extends Component{
 
 const mapStateToProps = (state) => {
   return ({
-    itemNumber:state.getIn(['header','itemNumber'])
+    itemNumber:state.getIn(['itemNumber'])
   })
 }
 
