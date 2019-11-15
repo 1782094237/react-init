@@ -33,3 +33,16 @@
   background: rgb(255, 174, 13);
 }
 
+.info-table{
+  margin-top:1rem;
+  font-weight: 500;
+}
+
+.info-list{
+  margin-top:1rem;
+}
+
+.info-panel-table{
+  font-weight: 500;
+}
+

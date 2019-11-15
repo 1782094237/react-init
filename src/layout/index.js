@@ -8,6 +8,8 @@ import File from '../file';
 
 import TeamInfo from '../teamInfo';
 
+import TeamPeople from '../teamPeople'
+
 
 import { Layout, Menu, Button, Dropdown, Icon } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
@@ -48,6 +50,10 @@ class Lay extends Component{
       break;
       case '10': content = (
         <TeamInfo />
+      );
+      break;
+      case '12': content = (
+        <TeamPeople />
       );
       break;
       default: content = null;
