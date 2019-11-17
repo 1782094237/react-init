@@ -55,17 +55,15 @@ const columns = [
               {tag.toUpperCase()}
             </Tag>
           );
-        })}
+        })} 
       </span>
     ),
   },
 ];
 
-const data = [
+const data = [ 
   {
-
     name: '巴方硕',
-
     tags: ['组长'],
   },
   {
@@ -172,6 +170,9 @@ class TeamInfo extends Component{
       <Fragment>
         <Row>
           <Col span={16}>
+          <div className="info-title">
+              软件工程项目名称
+            </div>
             <div className="info-left">
               项目动态
             </div>
