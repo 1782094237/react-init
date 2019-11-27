@@ -8,7 +8,7 @@ import './style.css';
 
 import { actionCreator } from '../store';
 
-import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input, Table, Divider, Tag, Collapse } from 'antd';
+import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input, Table, Divider, Tag, Collapse, Timeline } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -30,17 +30,17 @@ const customPanelStyle = {
 const columns = [
   {
     title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'userName',
+    key: 'userName',
     render: text => <a>{text}</a>,
   },
   {
     title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
+    key: 'identity',
+    dataIndex: 'identity',
+    render: identity => (
       <span>
-        {tags.map(tag => {
+        {identity.split(',').map(tag => {
           let color ;
           if(tag === '组员'){
             color = 'geekblue'
@@ -165,6 +165,56 @@ const taskSetting = {
 
 
 class TeamInfo extends Component{
+  componentDidMount(){
+
+    axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
+    .then((resolve) => {
+      console.log("数据输出")
+      console.log(resolve.data.bigTasks[0].smallTasks)
+      // let data = resolve.data.bigTasks.samllTasks;
+      this.props.handleSetTaskData(resolve.data)
+      console.log("**************************")
+      console.log(this.props.taskData.bigTasks[0].smallTasks)
+    })
+    .catch((error) => {
+
+    })
+
+    axios.get(localStorage.api+'team/info',{withCredentials:true})
+    .then((resolve) => {
+      // identity: "普通组员"
+      // userClass: "zy1602"
+      // userCollege: "计算机科学与技术学院"
+      // userId: "0121610870807"
+      // userName: "陈小路"
+      // userProfessional: "计算机科学与技术"
+      // userSex: "男"
+      console.log("数据输出11111")
+      console.log(resolve.data)
+      // let data = resolve.data.bigTasks.samllTasks;
+      // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
+
+      this.props.handleSetPeopleInfo(resolve.data)
+
+    })
+    .catch((error) => {
+    })
+
+
+    axios.get(localStorage.api+'team/myNotice',{withCredentials:true})
+    .then((resolve) => {
+
+      console.log("数据输出11111")
+      console.log(resolve.data)
+      // let data = resolve.data.bigTasks.samllTasks;
+      // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
+
+      this.props.handleSetNotice(resolve.data)
+
+    })
+    .catch((error) => {
+    })
+  }
   render(){
     return(
       <Fragment>
@@ -176,11 +226,29 @@ class TeamInfo extends Component{
             <div className="info-left">
               项目动态
             </div>
+            <Timeline className="info-notice">
+              <Timeline.Item >
+                <p>陈小路 &nbsp;&nbsp; 2019-01-06 18:55</p>
+                Create a services site 2015-09-01
+              </Timeline.Item>
+              <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
+              <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
+              <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
+            </Timeline>
+            <Timeline className="info-notice">
+              <Timeline.Item >
+                <p>何业兰 &nbsp;&nbsp; 2019-01-06 18:55</p>
+                Create a services site 2015-09-01
+              </Timeline.Item>
+              <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
+              <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
+              <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
+            </Timeline>
           </Col>
           <Col span={8}>
             <div className="info-box info-title">
               项目成员
-              <Table showHeader={false} className="info-table" columns={columns} dataSource={data} pagination={setting} />
+              <Table showHeader={false} className="info-table" columns={columns} dataSource={this.props.peopleInfo.studentsInfo} pagination={setting} />
             </div>
             <div className="info-box">
               项目进度
@@ -212,6 +280,9 @@ class TeamInfo extends Component{
 
 const mapStateToProps = (state) => {
   return ({
+    taskData:state.getIn(['taskData']),
+    peopleInfo:state.getIn(['peopleInfo']),
+    notice:state.getIn(['notice'])
     // file:state.getIn(['file']),
     // showFile:state.getIn(['showFile'])
   })
@@ -219,6 +290,18 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return ({
+    handleSetTaskData(key){
+      const action = actionCreator.setTaskData(key);
+      dispatch(action);
+    },
+    handleSetPeopleInfo(key){
+      const action = actionCreator.setPeopleInfo(key);
+      dispatch(action);
+    },
+    handleSetNotice(key){
+      const action = actionCreator.setNotice(key);
+      dispatch(action);
+    },
     // handleSetFile(key){
     //       const action = actionCreator.setFile(key);
     //       dispatch(action);

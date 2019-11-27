@@ -25,6 +25,8 @@ class File extends Component{
 
   resetFile(){
     let nowFile = this.props.file;
+    console.log("____________________")
+    console.log(nowFile.toJS())
     for(let i = 1; i < idStack.length; i++ ){
       for(let j = 0; j < nowFile.size; j++){
         if(idStack[i][0] == nowFile.getIn([j,"id"])){
@@ -38,8 +40,12 @@ class File extends Component{
   getFile(){
     if(nowFileId == this.props.fileId){
       const that = this;
-      axios.get('./mock.json',{withCredentials:true})
+      axios.post(localStorage.api+'files/allFiles',qs.stringify({
+        item: that.props.fileId,
+      }),{withCredentials:true})
         .then(function(response){
+          console.log("获取文件成功111111")
+          console.log(response.data.file)
           that.props.handleSetFile(fromJS(response.data.file))
           that.resetFile()
         })
@@ -47,17 +53,16 @@ class File extends Component{
           console.log(err)
         })
     }else{
-
-
-      console.log("000000000000000000000000") 
-
-
       nowFileId = this.props.fileId;
       idStack=[[0,"所有文件"]];
       this.getStack();
       const that = this;
-      axios.get('./mock.json',{withCredentials:true})
+      axios.post(localStorage.api+'files/allFiles',qs.stringify({
+        item: that.props.fileId,
+      }),{withCredentials:true})
         .then(function(response){
+          console.log("获取文件成功111111")
+          console.log(response.data.file)
           that.props.handleSetFile(fromJS(response.data.file))
           that.resetFile()
         })
@@ -114,7 +119,8 @@ class File extends Component{
   view(src){
     // let url = 'https://view.officeapps.live.com/op/view.aspx?src=./test.docx';
     // window.open(url,'_blank');
-
+    return(<iframe src='"+ this.previewUrl +"' width='100%' height='362px' frameborder='1'></iframe>)
+    // $("<iframe src='"+ this.previewUrl +"' width='100%' height='362px' frameborder='1'>").appendTo($(".video-handouts-preview"));
     // <iframe 
     // src='./test.docx' width='100%' height='100%' frameborder='1'>
     // </iframe>

@@ -1,0 +1,53 @@
+{
+  "bigTasks": [
+    {
+      "stage": "分析",
+      "smallTasks": [
+        {
+          "name": "分析1",
+          "remark": "设计阶段的一个任务1",
+          "id": 1,
+          "worker": "4",
+          "workerName": "测试",
+          "status": "进行中"
+        },
+        {
+          "name": "分析2",
+          "remark": "设计阶段的任务1",
+          "id": 2,
+          "worker": "4",
+          "workerName": "测试",
+          "status": "进行中"
+        }
+      ],
+      "id": 1,
+      "worker": "4",
+      "workerName": "测试",
+      "status": "未开始"
+    },
+    {
+      "stage": "设计",
+      "smallTasks": [],
+      "id": 2,
+      "worker": "1",
+      "workerName": "何金超",
+      "status": "未开始"
+    },
+    {
+      "stage": "实现",
+      "smallTasks": [],
+      "id": 3,
+      "worker": "4",
+      "workerName": "测试",
+      "status": "未开始"
+    },
+    {
+      "stage": "测试",
+      "smallTasks": [],
+      "id": 4,
+      "worker": "4",
+      "workerName": "测试",
+      "status": "未开始"
+    }
+  ]
+}

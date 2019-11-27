@@ -4,11 +4,23 @@ import { actionCreator } from '../store';
 
 import './style.css';
 
+import Task from '../task'
+
+// import Task_1 from '../task_1'
+
+// import Task_2 from '../task_2'
+
+// import Task_3 from '../task_3'
+
+
+
 import File from '../file';
 
 import TeamInfo from '../teamInfo';
 
-import TeamPeople from '../teamPeople'
+import TeamPeople from '../teamPeople';
+
+import Notice from '../notice'
 
 
 import { Layout, Menu, Button, Dropdown, Icon } from 'antd';
@@ -17,7 +29,6 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
-import teamInfo from '../teamInfo';
 moment.locale('zh-cn');
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -28,6 +39,22 @@ class Lay extends Component{
   getItem(){
     let content = null;
     switch(this.props.itemNumber){
+      case '1': content = (
+        <Task></Task>
+      );
+      break;
+      // case '2': content = (
+      //   <Task_1></Task_1>
+      // )
+      // break;
+      // case '3': content = (
+      //   <Task_2></Task_2>
+      // );
+      // break;
+      // case '4': content = (
+      //   <Task_3></Task_3>
+      // )
+      break;
       case '5': content = (
         <File fileId='1'></File>
       );
@@ -51,6 +78,10 @@ class Lay extends Component{
       case '10': content = (
         <TeamInfo />
       );
+      break;
+      case '11': content =(
+        <Notice></Notice>
+      )
       break;
       case '12': content = (
         <TeamPeople />
@@ -181,16 +212,15 @@ class Lay extends Component{
             </SubMenu>
         </Menu>
       </Sider>
-      <Layout style={{display:'flex',minHeight:'100vh' }}>
+      <Layout style={{ background: '#fff',display:'flex',height:'100vh' }}>
 
         
-        <Header style={{  background: '#fff', padding: 0, height:"3rem" }} />
+        <Header style={{   padding: 0, height:"3rem" }} />
         <Content style={{  background:'#fff',overflow: 'initial',flexGrow:'1'}}>
           <div style={{padding: '1.5rem', textAlign: 'center'}}>
             {this.getItem()}
           </div>
         </Content>
-        <Footer style={{textAlign:'center',padding:'1rem'}}>Ant Design ©2018 Created by Ant UED</Footer>
 
       </Layout>
     </Layout>

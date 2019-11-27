@@ -61,12 +61,71 @@ class LoginForm extends Component{
                     });
         }else{
           //登陆成功
+          console.log("登錄成功")
+          console.log(response.data)
           that.props.handleSetLogin(1);
+
+          axios.get(localStorage.api+'team/info',{withCredentials:true})
+          .then((resolve) => {
+            // identity: "普通组员"
+            // userClass: "zy1602"
+            // userCollege: "计算机科学与技术学院"
+            // userId: "0121610870807"
+            // userName: "陈小路"
+            // userProfessional: "计算机科学与技术"
+            // userSex: "男"
+            console.log("数据输出11111")
+            console.log(resolve.data)
+            // let data = resolve.data.bigTasks.samllTasks;
+            // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
+            // this.props.handleSetPeopleInfo()
+
+            // response.data
+
+            // id"4"
+            // key1
+            // userClass"zy1602"
+            // userCollege"jsj"
+            // userName"测试"
+            // userProfessional"jsj"
+            // userSex"男"
+
+            // resolve.data
+
+            // studentsInfo[
+            //   {
+            //     "userSex": "男",
+            //     "userClass": "zy1602",
+            //     "userCollege": "计算机科学与技术学院",
+            //     "identity": "普通组员",
+            //     "userProfessional": "计算机科学与技术",
+            //     "userName": "陈小路",
+            //     "userId": "0121610870807"
+            //   },
+            // ]
+            let result = {};
+            for(let i = 0 ; i < resolve.data.studentsInfo.length; i++){
+              if(response.data.id == resolve.data.studentsInfo[i].userId){
+                result = {
+                  id:response.data.id,
+                  name:response.data.userName,
+                  class:response.data.userClass,
+                  identity:resolve.data.studentsInfo[i].identity.split(',')
+                }
+                that.props.handleSetPersonal(result);
+                break;
+              }
+            }
+      
+          })
+          .catch((error) => {
+          })
         }
       })
       .catch(function(err){
+        console.log("登錄失敗")
         console.log(err)
-        that.props.handleSetLogin(1);
+        // that.props.handleSetLogin(1);
       })
   }
 
@@ -130,6 +189,7 @@ const Login = Form.create({ name: 'normal_login' })(LoginForm);
 
 const mapStateToProps = (state) => {
   return ({
+    personal:state.getIn(['personal'])
     // itemNumber:state.getIn(['header','itemNumber'])
   })
 }
@@ -140,6 +200,10 @@ const mapDispatchToProps = (dispatch) => {
           const action = actionCreator.setLogin(key);
           dispatch(action);
       },
+    handleSetPersonal(key){
+        const action = actionCreator.setPersonal(key);
+        dispatch(action);
+    },
   })
 }
 

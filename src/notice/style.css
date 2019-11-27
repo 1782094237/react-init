@@ -1,0 +1,41 @@
+.notice-title{
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.notice-new{
+  margin-right: 1rem;
+  cursor: pointer;
+  padding: 0 1.3rem !important;
+  border: 1px solid #202d40 !important;
+  background-color: #202d40 !important;
+}
+
+.notice-new span{
+  color: white !important;
+}
+
+.notice-new:hover{
+  opacity: 0.8;
+}
+
+.notice-name{
+  font-size:1rem;
+  font-weight: 500;
+}
+
+.notice-subTitle{
+  text-align: left
+}
+
+.notice-subTitle h1 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
+
+。notice-notice{
+  margin-top:.5rem
+}
+
