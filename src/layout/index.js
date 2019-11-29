@@ -2,19 +2,31 @@ import React,{ Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { actionCreator } from '../store';
 
+import axios from 'axios';
+
 import './style.css';
+
+import {fromJS, toJS, getIn} from 'immutable';
 
 import Task from '../task'
 
-// import Task_1 from '../task_1'
+import Task_1 from '../task_1'
 
-// import Task_2 from '../task_2'
+import Task_2 from '../task_2'
 
-// import Task_3 from '../task_3'
+import Task_3 from '../task_3'
 
 
 
 import File from '../file';
+
+import File_1 from '../file_1';
+
+import File_2 from '../file_2';
+
+import File_3 from '../file_3';
+
+import File_4 from '../file_4';
 
 import TeamInfo from '../teamInfo';
 
@@ -37,42 +49,42 @@ const { SubMenu } = Menu;
 class Lay extends Component{
 
   getItem(){
-    let content = null;
+    let content = <TeamInfo />;
     switch(this.props.itemNumber){
       case '1': content = (
         <Task></Task>
       );
       break;
-      // case '2': content = (
-      //   <Task_1></Task_1>
-      // )
-      // break;
-      // case '3': content = (
-      //   <Task_2></Task_2>
-      // );
-      // break;
-      // case '4': content = (
-      //   <Task_3></Task_3>
-      // )
+      case '2': content = (
+        <Task_1></Task_1>
+      )
+      break;
+      case '3': content = (
+        <Task_2></Task_2>
+      );
+      break;
+      case '4': content = (
+        <Task_3></Task_3>
+      )
       break;
       case '5': content = (
         <File fileId='1'></File>
       );
       break;
       case '6': content = (
-        <File fileId='2'></File>
+        <File_1 fileId='2'></File_1>
       );
       break;
       case '7': content = (
-        <File fileId='3'></File>
+        <File_2 fileId='3'></File_2>
       );
       break;
       case '8': content = (
-        <File fileId='4'></File>
+        <File_3 fileId='4'></File_3>
       );
       break;
       case '9': content = (
-        <File fileId='5'></File>
+        <File_4 fileId='5'></File_4>
       );
       break;
       case '10': content = (
@@ -87,27 +99,83 @@ class Lay extends Component{
         <TeamPeople />
       );
       break;
-      default: content = null;
+      default: content = <TeamInfo />;
     }
     return content;
   }
 
+  getName(){
+    console.log("&&&&&&&&&&&&&&&&^^^^^^^^^^^^^")
+    console.log(this.props.personal.name)
+    if(this.props.personal.name){
+      if (this.props.personal.name.length ==2){
+        return this.props.personal.name
+      }else{
+        return this.props.personal.name.slice(this.props.personal.name.length-2,this.props.personal.name.length)
+      }
+    }
+    return "?"
+  }
+
+  getSubItem(){
+    
+
+    if(this.props.teamInfo.nowTask){
+      console.log("获取状态成功")
+      console.log(this.props.taskData)
+      if(this.props.taskData){
+
+
+          return (
+            <SubMenu
+            className="main-item"
+            key="sub1"
+            title={
+              <span  style={{fontSize:'1rem'}}>
+                <Icon type="profile" style={{fontSize:'1rem'}} />
+                <span>任务管理</span>
+              </span>
+            }
+          >
+              <Menu.Item className="sub-item" key="1" disabled={this.props.taskData.getIn(['bigTasks',0,'status']) =="未开始"?true:false} >需求任务 —— {this.props.taskData.getIn(['bigTasks',0,'status'])}</Menu.Item>
+              <Menu.Item className="sub-item" key="2" disabled={this.props.taskData.getIn(['bigTasks',1,'status']) =="未开始"?true:false}>设计任务 —— {this.props.taskData.getIn(['bigTasks',1,'status'])}</Menu.Item>
+              <Menu.Item className="sub-item" key="3" disabled={this.props.taskData.getIn(['bigTasks',2,'status']) =="未开始"?true:false}>实现任务 —— {this.props.taskData.getIn(['bigTasks',2,'status'])}</Menu.Item>
+              <Menu.Item className="sub-item" key="4" disabled={this.props.taskData.getIn(['bigTasks',3,'status']) =="未开始"?true:false}>测试任务 —— {this.props.taskData.getIn(['bigTasks',3,'status'])}</Menu.Item>
+            </SubMenu>
+          );
+    }
+  }
+}
+
+componentDidMount(){
+      //获取所有任务，刷新任务
+      axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
+      .then((resolve) => {
+        console.log("数据输出888888888888888888888888888")
+        resolve.data.bigTasks[0].smallTasks.reverse();
+        console.log(resolve.data)
+        // console.log(resolve.data.bigTasks[0].smallTasks)
+
+        // let data = resolve.data.bigTasks.samllTasks;
+        this.props.handleSetTaskData(fromJS(resolve.data));
+        console.log("**************************")
+        // console.log(this.props.taskData.bigTasks[0].smallTasks)
+        console.log(this.props.taskData.getIn(['bigTasks',0,'smallTasks']))
+      })
+      .catch((error) => {
+        alert("网络延迟过高")
+      })
+}
+
 
   render() {
+
 
     const menu = (
       <Menu >
         <Menu.Item key="1">
           <Icon type="user" />
-          1st menu item
-        </Menu.Item>
-        <Menu.Item key="2">
-          <Icon type="user" />
-          2nd menu item
-        </Menu.Item>
-        <Menu.Item key="3">
-          <Icon type="user" />
-          3rd item
+          退出登录
         </Menu.Item>
       </Menu>
     );
@@ -127,17 +195,19 @@ class Lay extends Component{
 
         <div className = "right-container">
           
-            <Dropdown overlay={menu}>
+            {/* <Dropdown overlay={menu}>
               <div className="right-item1">         
                 <svg className="right-icon1" aria-hidden="true">
                     <use xlinkHref="#icon-tongzhi"></use>
                 </svg>
               </div> 
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown overlay={menu}>          
               <div className = "right-item2">
                 <div className="lay-round">
-                  方硕                
+                  {
+                    this.getName()
+                  }                
                 </div>
                 <svg className="right-icon2" aria-hidden="true">
                     <use xlinkHref="#icon-un-sortbydown-o"></use>
@@ -157,27 +227,17 @@ class Lay extends Component{
                 <use xlinkHref="#icon-dateboard"></use>
               </svg>
               <div className="group-text">
-                巴方硕的小组A
+                {
+                  this.props.teamInfo ? this.props.teamInfo.teamName : null
+                }
               </div>
           </Menu.Item>
 
 
-          <SubMenu
-              className="main-item"
-              key="sub1"
-              title={
-                <span  style={{fontSize:'1rem'}}>
-                  <Icon type="profile" style={{fontSize:'1rem'}} />
-                  <span>任务管理</span>
-                </span>
-              }
-            >
-              <Menu.Item className="sub-item" key="1">需求任务</Menu.Item>
-              <Menu.Item className="sub-item" key="2">设计任务</Menu.Item>
-              <Menu.Item className="sub-item" key="3">实现任务</Menu.Item>
-              <Menu.Item className="sub-item" key="4">测试任务</Menu.Item>
-            </SubMenu>
 
+            {
+                this.getSubItem()
+            }
             <SubMenu
               className="main-item"
               key="sub2"
@@ -208,7 +268,6 @@ class Lay extends Component{
               <Menu.Item className="sub-item" key="10">项目概况</Menu.Item>
               <Menu.Item className="sub-item" key="11">项目通知</Menu.Item>
               <Menu.Item className="sub-item" key="12">成员管理</Menu.Item>
-              <Menu.Item className="sub-item" key="13">项目设置</Menu.Item>
             </SubMenu>
         </Menu>
       </Sider>
@@ -230,7 +289,10 @@ class Lay extends Component{
 
 const mapStateToProps = (state) => {
   return ({
-    itemNumber:state.getIn(['itemNumber'])
+    itemNumber:state.getIn(['itemNumber']),
+    personal:state.getIn(['personal']),
+    teamInfo:state.getIn(['teamInfo']),
+    taskData:state.getIn(['taskData'])
   })
 }
 
@@ -241,6 +303,10 @@ const mapDispatchToProps = (dispatch) => {
           const action = actionCreator.setItemNumber(e.key);
           dispatch(action);
       },
+    handleSetTaskData(value){
+      const action = actionCreator.setTaskData(value);
+      dispatch(action);
+    }
   })
 }
 

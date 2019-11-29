@@ -17,7 +17,7 @@ class IfLogin extends Component {
       if (start!=-1)
       { 
         //已登录
-        this.props.setLogin(1)
+        this.props.handleSetLogin(1)
         // return <Lay></Lay>
       } else{
         //未登录

@@ -1,0 +1,91 @@
+.file-button{
+  float:right;
+  overflow: hidden;
+  width:20rem;
+}
+
+.up-file{
+  margin-right: 1rem;
+  cursor: pointer;
+  padding: 0 1.3rem !important;
+  border: 1px solid #202d40 !important;
+  background-color: #202d40 !important;
+}
+
+.up-file span{
+  color: white !important;
+}
+
+.up-file:hover{
+  opacity: 0.8;
+}
+
+.file-name{
+  margin-top:5rem;
+  padding-bottom:0.5rem;
+  font-size: 0.8rem;
+  color:black !important;
+  -webkit-box-shadow:0 12px 10px -7px rgba(32,45,64,.2);
+  box-shadow:0 12px 10px -7px rgba(32,45,64,.2);
+  text-align: left !important;
+}
+
+.file-content{
+  margin-top:1.5rem;
+  font-size: 0.8rem;
+  color:black !important;
+  text-align: left !important;
+}
+
+.file-icon{
+  overflow: hidden;
+  width: 2rem !important;
+  height: 2rem !important;
+  fill: currentColor;
+  margin-right: 0.8rem;
+}
+
+.file-stack{
+  float:left;
+  color: block;
+  margin-top:3rem;
+  margin-left:1rem;
+  color:black;
+  font-size:0.8rem;
+  font-weight: 500;
+}
+
+
+
+.file-item{
+  display: flex !important;
+  align-content: center;
+  font-size: 0.9rem;
+  line-height: 2.2rem;
+  color:#202D40 !important;
+}
+
+.file-sub{
+  padding: 1rem 0 1rem 1rem !important;
+  border-bottom: 1px solid #dadfe6;
+}
+
+.file-sub:hover{
+  background:rgba(218,223,230,.3);
+  cursor:pointer;
+}
+
+.file-back{
+
+}
+
+.file-back:last-child{
+  color:black;
+}
+
+/* .file-back:after{
+  content:"  <  ";
+  color:black;
+} */
+
+

@@ -73,4 +73,9 @@ export const setPersonal = (key) => ({
   value: key
 })
 
+export const setTeamInfo = (key) => ({
+  type:actionTypes.TEAMINFO,
+  value:key
+})
+
 

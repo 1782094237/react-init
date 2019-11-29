@@ -45,7 +45,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                     initialValue:data.userName
                   })(<Input disabled />)}
                 </Form.Item>
-              <Form.Item label="Gender">
+              <Form.Item label="负责人">
                 {getFieldDecorator('gender', {
                   rules: [{ required: true, message: 'Please select your gender!' }],
                   initialValue:(data.identity === undefined ? null :data.identity.split(','))
@@ -121,21 +121,23 @@ class TeamPeople extends Component{
         render:identity => (
           <span>
             {
-            identity.split(',').map(tag => {
+            identity.split(',').map((tag,index) => {
               let color ;
-              if(tag === '组员'){
+              if(tag === '普通组员'){
                 color = 'geekblue'
               }
               else if (tag === '组长') {
                 color = 'volcano';
               }else{
-                color = 'green'
+                color = 'geekblue'
               }
-              return (
-                <Tag color={color} key={tag}>
-                  {tag.toUpperCase()}
-                </Tag>
-              );
+              if(index !== 0){
+                return (
+                  <Tag className="people-padding" color={color} key={tag}>
+                    {tag.toUpperCase()}
+                  </Tag>
+                );
+              }
             })
             }
           </span>
@@ -204,6 +206,7 @@ class TeamPeople extends Component{
         }
       })
       console.log(taskId.join(','))
+      const that = this;
 
       axios.post(localStorage.api+'team/bigWorker',qs.stringify({
         workerId:this.props.peopleSmall.userId,
@@ -213,24 +216,24 @@ class TeamPeople extends Component{
       .then(function(response){
         console.log("成功")
         console.log(response.data)
-      })
-      .catch(function(err){
-        console.log("失败")
-        console.log(err)
-      })
-
-      axios.get(localStorage.api+'team/info',{withCredentials:true})
+        axios.get(localStorage.api+'team/info',{withCredentials:true})
         .then((resolve) => {
           console.log("数据输出11111")
           console.log(resolve.data)
           // let data = resolve.data.bigTasks.samllTasks;
           // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
-          this.props.handleSetPeopleInfo(resolve.data)
-          console.log("^^^^^^^^^^^^^^^^^^^^")
-          console.log(this.props.peopleInfo.studentsInfo)
+          that.props.handleSetPeopleInfo(resolve.data)
         })
         .catch((error) => {
+          alert("失败")
         })
+      })
+      .catch(function(err){
+        console.log("失败")
+        console.log(err)
+        alert("网络延迟高")
+      })
+
 
 
 

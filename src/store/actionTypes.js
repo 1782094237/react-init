@@ -32,3 +32,7 @@ export const NEWNOTICE = 'notice/new'
 
 export const PERSONAL = 'login/personal'
 //保存个人信息
+
+export const TEAMINFO = 'login/teaminfo'
+//保存小组信息
+

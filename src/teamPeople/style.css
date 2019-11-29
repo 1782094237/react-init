@@ -1,3 +1,8 @@
 .people-table{
   font-weight: 700;
 }
+
+.people-padding{
+  margin-top:.3rem;
+  margin-bottom: .3rem
+}

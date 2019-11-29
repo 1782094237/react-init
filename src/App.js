@@ -12,7 +12,7 @@ import Lay from './layout'
 
 require('./static/icons/iconfont.js')
 
-localStorage.api = "http://27y6v05022.wicp.vip:40292/";
+localStorage.api = "http://121.40.217.108:8080/";
 console.log(localStorage.api)
 class App extends Component {
 

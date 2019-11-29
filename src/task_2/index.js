@@ -78,13 +78,13 @@ const getEndTime = (endTime) => {
 }
 const columns = [
   {
-    title: '需求名称',
+    title: '实现名称',
     dataIndex: 'name',
     key: 'name',
     render: text => <a>{text}</a>,
   },
   {
-    title: '需求进度',
+    title: '实现进度',
     key: 'status',
     dataIndex: 'status',
     render: status => (
@@ -225,7 +225,7 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
                   })(<Input disabled  />)}
                 </Form.Item>
 
-                <Form.Item label="需求描述">
+                <Form.Item label="实现描述">
                   {getFieldDecorator('desc', {
                     rules: [{ message: 'Please input the title of collection!' }],
                   })(<div ref = { (ref) => this._div = ref }></div>)}
@@ -242,7 +242,7 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
                       // endTime: 1575201236000
                       // id: 2
                       // name: "分析2"
-                      // remark: "设计阶段的任务1"
+                      // remark: "实现阶段的任务1"
                       // status: "进行中"
                       // worker: "4"
                       // workerName: "测试"
@@ -272,7 +272,7 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
                     <Option value="进行中">进行中</Option>
                     <Option value="待审核">待审核</Option>
                     {
-                      personal.identity.contains("组长") || personal.identity.contains("需求负责人") == true ?<Option value="已完成" >已完成</Option>:null
+                      personal.identity.contains("组长") || personal.identity.contains("实现负责人") == true ?<Option value="已完成" >已完成</Option>:null
                     }
                     
                   </Select>,
@@ -340,7 +340,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         <Modal
           visible={visible}
           width='60%'
-          title="创建需求"
+          title="创建实现"
           okText="Create"
           onCancel={onCancel}
           onOk={onOk}
@@ -354,7 +354,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   })(<Input  />)}
                 </Form.Item>
 
-                <Form.Item label="需求描述">
+                <Form.Item label="实现描述">
                   {getFieldDecorator('desc', {
                     rules: [{ message: 'Please input the title of collection!' }],
                   })(<div ref = { (ref) => this._div = ref }></div>)}
@@ -386,7 +386,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
 );
 
 
-class Task extends Component{
+class Task_2 extends Component{
 
   componentDidMount(){
     // axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
@@ -457,7 +457,7 @@ class Task extends Component{
       let d = new Date(values['date-picker']['_d'])
       var datetime=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); 
       // console.log(this.props.taskData.bigTasks[0].id)
-      console.log(this.props.taskData.getIn(['bigTasks',0,'id']))
+      console.log(this.props.taskData.getIn(['bigTasks',2,'id']))
       // {title: "223", desc: "<p>132</p>", gender: "0121610870807", date-picker: Moment}
       
         // workerId:values['gender'],
@@ -472,7 +472,7 @@ class Task extends Component{
         name:values['title'],
         desc:values['desc'],
         // itemId:this.props.taskData.bigTasks[0].id,
-        itemId:this.props.taskData.getIn(['bigTasks',0,'id']),
+        itemId:this.props.taskData.getIn(['bigTasks',2,'id']),
         endTime:datetime,
       }),{withCredentials:true}
       )
@@ -582,17 +582,21 @@ class Task extends Component{
   }
 
   submitTask(){
-    const that = this;
-    let judge = this.props.taskData.getIn(['bigTasks',0,'smallTasks']).toJS().every((value,index) => {
+
+    let judge = this.props.taskData.getIn(['bigTasks',2,'smallTasks']).toJS().every((value,index) => {
+      console.log("判断完成")
+      console.log(value)
       return value.status == "已完成";
     })
+    const that = this;
     if(judge){
-      if(this.props.taskData.getIn(['bigTasks',0,'status']) == '已完成'){
+
+      if(this.props.taskData.getIn(['bigTasks',2,'status']) == '已完成'){
         alert("请勿重复提交！")
       }else{
       
       axios.post(localStorage.api+'team/bigStatus',qs.stringify({
-        taskId:1,
+        taskId:3,
         status:'已完成'
       }),{withCredentials:true}
       )
@@ -600,26 +604,24 @@ class Task extends Component{
         alert("提交成功")
         console.log("成功")
         console.log(response.data)
-        console.log("执行到这里+++++++++++++++++++++++")
-        console.log(that.props.taskData.toJS())
       })
       .catch(function(err){
         console.log("失败")
         console.log(err)
         alert("网络延迟过高")
       })
-
+      
       axios.post(localStorage.api+'team/bigStatus',qs.stringify({
-        taskId:2,
+        taskId:4,
         status:'进行中'
       }),{withCredentials:true}
       )
       .then(function(response){
+
         console.log("成功")
         console.log(response.data)
         console.log("执行到这里+++++++++++++++++++++++")
-              //获取所有任务，刷新任务
-              that.resetTask();
+        that.resetTask();
 
       })
       .catch(function(err){
@@ -628,8 +630,7 @@ class Task extends Component{
         alert("网络延迟过高")
       })
     }
-      
-      
+
     }else{
       alert("任务未完成！")
     }
@@ -642,12 +643,12 @@ class Task extends Component{
     .then((resolve) => {
       console.log("数据输出***************************")
       // console.log(resolve.data.bigTasks[0].smallTasks)
-      resolve.data.bigTasks[0].smallTasks.reverse();
+      resolve.data.bigTasks[2].smallTasks.reverse();
       // let data = resolve.data.bigTasks.samllTasks;
       this.props.handleSetTaskData(fromJS(resolve.data));
       console.log("**************************")
       // console.log(this.props.taskData.bigTasks[0].smallTasks)
-      console.log(this.props.taskData.getIn(['bigTasks',0,'smallTasks']))
+      console.log(this.props.taskData.getIn(['bigTasks',2,'smallTasks']))
     })
     .catch((error) => {
       alert("网络延迟过高")
@@ -688,9 +689,9 @@ class Task extends Component{
       <Fragment>
         <Row>
           <Col className="task-title" span = {6}>
-            <span>需求管理</span>
+            <span>实现管理</span>
             {/* <span className="task-name"> — {this.props.taskData.bigTasks === undefined ? "未分配" : this.props.taskData.bigTasks[0].workerName}</span> */}
-            <span className="task-name"> — { this.props.taskData.getIn(['bigTasks']) && this.props.taskData.getIn(['bigTasks',0,'workerName'])  ?  this.props.taskData.getIn(['bigTasks',0,'workerName']) : "未分配" }</span>
+            <span className="task-name"> — { this.props.taskData.getIn(['bigTasks']) && this.props.taskData.getIn(['bigTasks',2,'workerName'])  ?  this.props.taskData.getIn(['bigTasks',2,'workerName']) : "未分配" }</span>
           </Col>
           <Col span = {6}></Col>
           <Col span = {6} style={{textAlign:'right'}}>
@@ -698,22 +699,22 @@ class Task extends Component{
           </Col>
           <Col span = {6} style={{textAlign:'right'}}>
             {
-                this.props.personal.identity.contains("组长") || this.props.personal.identity.contains("需求负责人") == true 
+                this.props.personal.identity.contains("组长") || this.props.personal.identity.contains("实现负责人") == true 
                 ?<Button onClick={this.submitTask.bind(this)} className="task-new">提交任务</Button>
                 :<Button onClick={this.submitTask.bind(this)} className="task-new" disabled>提交任务</Button>
             }
 
             {
-                this.props.personal.identity.contains("组长") || this.props.personal.identity.contains("需求负责人") == true 
-                ?<Button onClick={this.newTask.bind(this)} className="task-new">新建需求</Button>
-                :<Button onClick={this.newTask.bind(this)} className="task-new" disabled>新建需求</Button> 
+                this.props.personal.identity.contains("组长") || this.props.personal.identity.contains("实现负责人") == true 
+                ?<Button onClick={this.newTask.bind(this)} className="task-new">新建实现</Button>
+                :<Button onClick={this.newTask.bind(this)} className="task-new" disabled>新建实现</Button> 
             }
 
           
           </Col>
 
         </Row>
-        <Table className="task-table" columns={columns} dataSource = {this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',0,'smallTasks']).toJS() }  pagination={setting}         
+        <Table className="task-table" columns={columns} dataSource = {this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',2,'smallTasks']).toJS() }  pagination={setting}         
            onRow={(record,rowkey)=>{
              return{
                onClick : this.selectTable.bind(this,record,rowkey)    //点击行 record 指的本行的数据内容，rowkey指的是本行的索引         
@@ -795,7 +796,7 @@ const mapDispatchToProps = (dispatch) => {
   })
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Task)
+export default connect(mapStateToProps,mapDispatchToProps)(Task_2)
 
 
 

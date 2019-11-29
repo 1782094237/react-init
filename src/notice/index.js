@@ -72,7 +72,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           onOk={onOk}
         >
           <Form  layout="vertical">
-              <Form.Item label="Gender">
+              <Form.Item label="负责人">
                 {getFieldDecorator('gender', {
                   rules: [{ required: true, message: 'Please select your gender!' }],
                 })(
@@ -187,9 +187,10 @@ class Notice extends Component{
       console.log("数据输出")
       console.log(resolve.data.bigTasks[0].smallTasks)
       // let data = resolve.data.bigTasks.samllTasks;
-      this.props.handleSetTaskData(resolve.data)
+      resolve.data.bigTasks[0].smallTasks.reverse();
+      // let data = resolve.data.bigTasks.samllTasks;
+      this.props.handleSetTaskData(fromJS(resolve.data));
       console.log("**************************")
-      console.log(this.props.taskData.bigTasks[0].smallTasks)
     })
     .catch((error) => {
 
@@ -241,8 +242,8 @@ class Notice extends Component{
         this.props.notice.groupNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp; {value.time} </p>
-                    {value.content}
+                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )
         })
@@ -265,8 +266,8 @@ class Notice extends Component{
         this.props.notice.teacherNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp; {value.time} </p>
-                    {value.content}
+                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )
         })
@@ -284,8 +285,8 @@ class Notice extends Component{
         this.props.notice.myNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp; {value.time} </p>
-                    {value.content}
+                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )
         })
@@ -340,7 +341,6 @@ const mapStateToProps = (state) => {
     peopleInfo:state.getIn(['peopleInfo']),
     notice:state.getIn(['notice']),
     newNotice:state.getIn(['newNotice']),
-    peopleInfo:state.getIn(['peopleInfo'])
     // file:state.getIn(['file']),
     // showFile:state.getIn(['showFile'])
   })

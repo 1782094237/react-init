@@ -16,7 +16,8 @@ const defaultState = fromJS({
   peopleSmall:{},
   notice:{},
   newNotice:false,
-  personal:{}
+  personal:{},
+  teamInfo:{},
 })
 
 export default (state = defaultState, action) => {
@@ -62,6 +63,9 @@ export default (state = defaultState, action) => {
 
     case actionTypes.PERSONAL:
         return state.set("personal",action.value)
+
+    case actionTypes.TEAMINFO:
+        return state.set("teamInfo",action.value)
 
   }
   return state;

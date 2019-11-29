@@ -1,0 +1,30 @@
+.task-title{
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.task-new{
+  margin-right: 1rem;
+  cursor: pointer;
+  padding: 0 1.3rem !important;
+  border: 1px solid #202d40 !important;
+  background-color: #202d40 !important;
+}
+
+.task-new span{
+  color: white !important;
+}
+
+.task-new:hover{
+  opacity: 0.8;
+}
+
+.task-name{
+  font-size:1rem;
+  font-weight: 500;
+}
+
+.task-table{
+  margin-top:1rem;
+}

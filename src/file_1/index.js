@@ -21,7 +21,7 @@ const { confirm } = Modal;
 
 let nowFileId = 0;
 let idStack = [['0',"所有文件"]];
-class File extends Component{
+class File_1 extends Component{
 
   resetFile(){
     let nowFile = this.props.file;
@@ -311,24 +311,19 @@ class File extends Component{
     onOk() {
       console.log("执行xxxxxxxxxxxxxxxxxx")
       console.log(idStack[idStack.length-1][0])
-      if(document.getElementById('floder').value == ""){
-        alert("文件夹名不能为空!")
-      }else{
-        axios.post(localStorage.api+'files/newFolder',qs.stringify({
-          item: that.props.fileId,
-          fatherId:idStack[idStack.length-1][0],
-          folderName:document.getElementById('floder').value
-        }),{withCredentials:true})
-        .then((response) => {
-          that.getFile()
-          console.log(response)
-        })
-        .catch((err) => {
-  
-          console.log(err)
-        })
-      }
+      axios.post(localStorage.api+'files/newFolder',qs.stringify({
+        item: that.props.fileId,
+        fatherId:idStack[idStack.length-1][0],
+        folderName:document.getElementById('floder').value
+      }),{withCredentials:true})
+      .then((response) => {
+        that.getFile()
+        console.log(response)
+      })
+      .catch((err) => {
 
+        console.log(err)
+      })
     },
     onCancel() {},
   });
@@ -469,4 +464,4 @@ const mapDispatchToProps = (dispatch) => {
   })
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(File)
+export default connect(mapStateToProps,mapDispatchToProps)(File_1)

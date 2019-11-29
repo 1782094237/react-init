@@ -40,22 +40,27 @@ const columns = [
     dataIndex: 'identity',
     render: identity => (
       <span>
-        {identity.split(',').map(tag => {
-          let color ;
-          if(tag === '组员'){
-            color = 'geekblue'
-          }
-          else if (tag === '组长') {
-            color = 'volcano';
-          }else{
-            color = 'green'
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })} 
+        {
+            identity.split(',').map((tag,index) => {
+              let color ;
+              if(tag === '普通组员'){
+                color = 'geekblue'
+              }
+              else if (tag === '组长') {
+                color = 'volcano';
+              }else{
+                color = 'geekblue'
+              }
+              if(index !== 0){
+                return (
+                  <Tag  className = "team-padding" color={color} key={tag}>
+                    {tag.toUpperCase()}
+                  </Tag>
+                );
+              }
+
+            })
+        } 
       </span>
     ),
   },
@@ -81,8 +86,26 @@ const data = [
 
 ];
 const setting = {
-  disabled:true,
   hideOnSinglePage:true
+}
+
+const getTag = (status)=>{
+  let color ;
+  if(status === '未开始'){
+    color = 'volcano'
+  }
+  else if (status === '进行中') {
+    color = 'geekblue';
+  }else if(status === '待审核'){
+    color = 'purple'
+  }else{
+    color = 'green'
+  }
+  return (
+    <Tag color={color} key={status}>
+      {status.toUpperCase()}
+    </Tag>
+  );
 }
 
 
@@ -98,35 +121,25 @@ const taskColumns = [
 
   {
     title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
+    key: 'status',
+    dataIndex: 'status',
+    render: status => (
       <span>
-        {tags.map(tag => {
-          let color ;
-          if(tag === '已完成'){
-            color = 'geekblue'
-          }
-          else if (tag === '未开始') {
-            color = 'volcano';
-          }else{
-            color = 'green'
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
+        {
+          getTag(status)
+        }
       </span>
     ),
   },
   {
-    title: 'People',
-    dataIndex: 'people',
-    key: 'people',
-    render: text => <a>{text}</a>,
+    title: '负责人',
+    dataIndex: 'workerName',
+    key: 'workerName',
   },
+
+
+
+  
 ];
 
 const taskData = [
@@ -151,7 +164,6 @@ const taskData = [
 
 ];
 const taskSetting = {
-  disabled:true,
   hideOnSinglePage:true,
 }
 
@@ -172,9 +184,10 @@ class TeamInfo extends Component{
       console.log("数据输出")
       console.log(resolve.data.bigTasks[0].smallTasks)
       // let data = resolve.data.bigTasks.samllTasks;
-      this.props.handleSetTaskData(resolve.data)
+      resolve.data.bigTasks[0].smallTasks.reverse();
+      // let data = resolve.data.bigTasks.samllTasks;
+      this.props.handleSetTaskData(fromJS(resolve.data));
       console.log("**************************")
-      console.log(this.props.taskData.bigTasks[0].smallTasks)
     })
     .catch((error) => {
 
@@ -182,18 +195,8 @@ class TeamInfo extends Component{
 
     axios.get(localStorage.api+'team/info',{withCredentials:true})
     .then((resolve) => {
-      // identity: "普通组员"
-      // userClass: "zy1602"
-      // userCollege: "计算机科学与技术学院"
-      // userId: "0121610870807"
-      // userName: "陈小路"
-      // userProfessional: "计算机科学与技术"
-      // userSex: "男"
       console.log("数据输出11111")
       console.log(resolve.data)
-      // let data = resolve.data.bigTasks.samllTasks;
-      // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
-
       this.props.handleSetPeopleInfo(resolve.data)
 
     })
@@ -214,7 +217,116 @@ class TeamInfo extends Component{
     })
     .catch((error) => {
     })
+
+    axios.get(localStorage.api+'/team/info',{withCredentials:true})
+    .then((resolve) => {
+      console.log("数据输出11111")
+      console.log(resolve.data)
+      // let data = resolve.data.bigTasks.samllTasks;
+      // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
+
+      this.props.handleSetPeopleInfo(resolve.data)
+
+    })
+    .catch((error) => {
+    })
   }
+
+  getStudentTimeItem(){
+    let result = [];
+    if(this.props.notice){
+      if(this.props.notice.size!==0){
+        this.props.notice.groupNotice.map((value,index) => {
+          result.push(
+                <Timeline.Item className="notice-top">
+                  <p>{value.creatorName} &nbsp;&nbsp; {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p dangerouslySetInnerHTML={{ __html: value.content }}  />
+                </Timeline.Item>
+          )
+        })
+      }
+    }
+    console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    console.log(result)
+    return result;
+
+  //   <Timeline.Item >
+  //   <p>陈小路 &nbsp;&nbsp; 2019-01-06 18:55</p>
+  //   Create a services site 2015-09-01
+  // </Timeline.Item>
+  }
+
+  getTeacherTimeItem(){
+    let result = [];
+    if(this.props.notice){
+      if(this.props.notice.size!==0){
+        this.props.notice.teacherNotice.map((value,index) => {
+          result.push(
+                <Timeline.Item className="notice-top">
+                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p dangerouslySetInnerHTML={{ __html: value.content }}  />
+                </Timeline.Item>
+          )
+        })
+      }
+    }
+    console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    console.log(result)
+    return result;
+  }
+
+  getMyTimeItem(){
+    let result = [];
+    if(this.props.notice){
+      if(this.props.notice.size!==0){
+        this.props.notice.myNotice.map((value,index) => {
+          result.push(
+                <Timeline.Item className="notice-top">
+                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p dangerouslySetInnerHTML={{ __html: value.content }}  />
+                </Timeline.Item>
+          )
+        })
+      }
+    }
+    console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    console.log(result)
+    return result;
+  }
+
+  getStatge(){
+    console.log("获取状态成功+++++++++++")
+    console.log(this.props.taskData.getIn(['bigTasks']))
+    if(this.props.taskData.getIn(['bigTasks'])){
+      console.log("获取状态成功-------------")
+
+    if(this.props.taskData.getIn(['bigTasks',0,'status']) == '进行中'){
+      return 1;
+    }else if(this.props.taskData.getIn(['bigTasks',1,'status']) == '进行中'){
+      return 2;
+    }else if(this.props.taskData.getIn(['bigTasks',2,'status']) == '进行中'){
+      return 3;
+    }else if(this.props.taskData.getIn(['bigTasks',3,'status']) == '进行中'){
+      return 4;
+    }
+  }else{
+    return 0;
+  }
+  }
+
+  getStatgeName(name,number){
+    console.log("得到状态")
+    console.log(this.getStatge())
+    if(this.getStatge() == number){
+      return name+"--------进行中"
+    }else if(this.getStatge() <= number){
+      return name+"--------未开始"
+    }else{
+      return name+"--------已完成"
+    }
+    
+  }
+
   render(){
     return(
       <Fragment>
@@ -227,26 +339,17 @@ class TeamInfo extends Component{
               项目动态
             </div>
             <Timeline className="info-notice">
-              <Timeline.Item >
-                <p>陈小路 &nbsp;&nbsp; 2019-01-06 18:55</p>
-                Create a services site 2015-09-01
-              </Timeline.Item>
-              <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-              <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-              <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
+              {this.getTeacherTimeItem()}
             </Timeline>
             <Timeline className="info-notice">
-              <Timeline.Item >
-                <p>何业兰 &nbsp;&nbsp; 2019-01-06 18:55</p>
-                Create a services site 2015-09-01
-              </Timeline.Item>
-              <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-              <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-              <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
+              {this.getStudentTimeItem()}
+            </Timeline>
+            <Timeline className="info-notice">
+              {this.getMyTimeItem()}
             </Timeline>
           </Col>
           <Col span={8}>
-            <div className="info-box info-title">
+            <div className="info-box ">
               项目成员
               <Table showHeader={false} className="info-table" columns={columns} dataSource={this.props.peopleInfo.studentsInfo} pagination={setting} />
             </div>
@@ -255,19 +358,23 @@ class TeamInfo extends Component{
               <Collapse
               className="info-list"
                 bordered={false}
-                defaultActiveKey={['2']}
+                defaultActiveKey={[this.getStatge()]}
                 expandIcon={({ isActive }) => <Icon type="caret-right" rotate={isActive ? 90 : 0} />}
               >
-                <Panel  header="需求&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已完成" key="1" style={customPanelStyle}>
+                <Panel  header={"需求 —— "+this.props.taskData.getIn(['bigTasks',0,'status'])} key="1" style={customPanelStyle}>
+                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',0,'smallTasks']).toJS()} pagination={taskSetting} />
                 </Panel>
-                <Panel header="设计&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进行中" key="2" style={customPanelStyle}>
-                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={taskData} pagination={taskSetting} />
+                <Panel header={"设计 —— "+this.props.taskData.getIn(['bigTasks',1,'status'])} key="2" style={customPanelStyle}>
+                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',1,'smallTasks']).toJS()} pagination={taskSetting} />
+
                 </Panel>
-                <Panel header="开发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未开始" key="3" style={customPanelStyle}>
-                  <p>开发</p>
+                <Panel header={"开发 —— "+this.props.taskData.getIn(['bigTasks',2,'status'])}  key="3" style={customPanelStyle}>
+                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',2,'smallTasks']).toJS()} pagination={taskSetting} />
+
                 </Panel>
-                <Panel header="测试&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;未开始" key="4" style={customPanelStyle}>
-                  <p>测试</p>
+                <Panel header={"测试 —— "+this.props.taskData.getIn(['bigTasks',3,'status'])}  key="4" style={customPanelStyle}>
+                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',3,'smallTasks']).toJS()} pagination={taskSetting} />
+
                 </Panel>
               </Collapse>
             </div>
@@ -282,7 +389,9 @@ const mapStateToProps = (state) => {
   return ({
     taskData:state.getIn(['taskData']),
     peopleInfo:state.getIn(['peopleInfo']),
-    notice:state.getIn(['notice'])
+    notice:state.getIn(['notice']),
+    teamInfo:state.getIn(['teamInfo']),
+
     // file:state.getIn(['file']),
     // showFile:state.getIn(['showFile'])
   })

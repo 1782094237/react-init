@@ -67,42 +67,10 @@ class LoginForm extends Component{
 
           axios.get(localStorage.api+'team/info',{withCredentials:true})
           .then((resolve) => {
-            // identity: "普通组员"
-            // userClass: "zy1602"
-            // userCollege: "计算机科学与技术学院"
-            // userId: "0121610870807"
-            // userName: "陈小路"
-            // userProfessional: "计算机科学与技术"
-            // userSex: "男"
-            console.log("数据输出11111")
+            console.log("数据输出5555555555555555555555")
             console.log(resolve.data)
-            // let data = resolve.data.bigTasks.samllTasks;
-            // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
-            // this.props.handleSetPeopleInfo()
-
-            // response.data
-
-            // id"4"
-            // key1
-            // userClass"zy1602"
-            // userCollege"jsj"
-            // userName"测试"
-            // userProfessional"jsj"
-            // userSex"男"
-
-            // resolve.data
-
-            // studentsInfo[
-            //   {
-            //     "userSex": "男",
-            //     "userClass": "zy1602",
-            //     "userCollege": "计算机科学与技术学院",
-            //     "identity": "普通组员",
-            //     "userProfessional": "计算机科学与技术",
-            //     "userName": "陈小路",
-            //     "userId": "0121610870807"
-            //   },
-            // ]
+            console.log("执行到这里")
+            that.props.handleSetTeamInfo(resolve.data.teamInfo)
             let result = {};
             for(let i = 0 ; i < resolve.data.studentsInfo.length; i++){
               if(response.data.id == resolve.data.studentsInfo[i].userId){
@@ -112,6 +80,8 @@ class LoginForm extends Component{
                   class:response.data.userClass,
                   identity:resolve.data.studentsInfo[i].identity.split(',')
                 }
+                console.log("&&&&&&&&&&%%%获取个人信息")
+                console.log(result)
                 that.props.handleSetPersonal(result);
                 break;
               }
@@ -189,7 +159,8 @@ const Login = Form.create({ name: 'normal_login' })(LoginForm);
 
 const mapStateToProps = (state) => {
   return ({
-    personal:state.getIn(['personal'])
+    personal:state.getIn(['personal']),
+    teamInfo:state.getIn(['teamInfo'])
     // itemNumber:state.getIn(['header','itemNumber'])
   })
 }
@@ -204,6 +175,12 @@ const mapDispatchToProps = (dispatch) => {
         const action = actionCreator.setPersonal(key);
         dispatch(action);
     },
+    handleSetTeamInfo(key){
+      console.log("执行了")
+        const action = actionCreator.setTeamInfo(key);
+        dispatch(action);
+    }
+    
   })
 }
 
