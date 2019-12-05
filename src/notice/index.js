@@ -9,13 +9,12 @@ import './style.css';
 
 import { actionCreator } from '../store';
 
-import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input, Table, Divider, Tag, Collapse, Timeline, Select, Form } from 'antd';
+import {  Button, Row, Col, message, Modal, Timeline, Select, Form } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
-import Axios from 'axios';
 moment.locale('zh-cn');
 var E = require('wangeditor')
 
@@ -29,7 +28,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
   class extends React.Component {
 
     componentDidUpdate(){
-      console.log(this.props.visible)
+      // console.log(this.props.visible)
       if(this.props.visible && !hasFu){
         setTimeout(() => {this.getEditor()})
       }
@@ -110,7 +109,7 @@ class Notice extends Component{
     if(this.props.peopleInfo){
       if( this.props.peopleInfo.size !== 0){
         this.props.peopleInfo.studentsInfo.map((value,index) => {
-        console.log(value)
+        // console.log(value)
         result.push(
         <Option value={value.userId}>{value.userName}</Option>
         )
@@ -128,23 +127,23 @@ class Notice extends Component{
       if (err) {
         return;
       }
-      console.log("*********************")
-      console.log(values)
-      
+      // console.log("*********************")
+      // console.log(values) 
       axios.post(localStorage.api+'team/addNotice',qs.stringify({
         targetId:values.gender,
         content:values.desc
       }),{withCredentials:true}
       )
       .then(function(response){
-        console.log("成功")
-        console.log(response.data)
+        // console.log("成功")
+        // console.log(response.data)
+        message.successs('新建通知成功！')
         
       axios.get(localStorage.api+'team/myNotice',{withCredentials:true})
       .then((resolve) => {
   
-        console.log("数据输出11111")
-        console.log(resolve.data)
+        // console.log("数据输出11111")
+        // console.log(resolve.data)
         // let data = resolve.data.bigTasks.samllTasks;
         // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
   
@@ -152,11 +151,11 @@ class Notice extends Component{
   
       })
       .catch((error) => {
+        message.error('获取通知失败！')
       })
       })
       .catch(function(err){
-        console.log("失败")
-        console.log(err)
+        message.error('新建通知失败！')
       })
 
       clearEdit.txt.clear();
@@ -184,34 +183,35 @@ class Notice extends Component{
 
     axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出")
-      console.log(resolve.data.bigTasks[0].smallTasks)
+      // console.log("数据输出")
+      // console.log(resolve.data.bigTasks[0].smallTasks)
       // let data = resolve.data.bigTasks.samllTasks;
       resolve.data.bigTasks[0].smallTasks.reverse();
       // let data = resolve.data.bigTasks.samllTasks;
       this.props.handleSetTaskData(fromJS(resolve.data));
-      console.log("**************************")
     })
     .catch((error) => {
 
+      message.error('获取任务信息失败！')
     })
 
     axios.get(localStorage.api+'team/info',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       this.props.handleSetPeopleInfo(resolve.data)
 
     })
     .catch((error) => {
+      message.error('获取小组信息失败！')
     })
 
 
     axios.get(localStorage.api+'team/myNotice',{withCredentials:true})
     .then((resolve) => {
 
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       // let data = resolve.data.bigTasks.samllTasks;
       // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
 
@@ -219,12 +219,13 @@ class Notice extends Component{
 
     })
     .catch((error) => {
+      message.error('获取通知信息失败！')
     })
 
     axios.get(localStorage.api+'/team/info',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       // let data = resolve.data.bigTasks.samllTasks;
       // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
 
@@ -232,6 +233,7 @@ class Notice extends Component{
 
     })
     .catch((error) => {
+      message.error('获取小组信息失败！')
     })
   }
 
@@ -249,8 +251,8 @@ class Notice extends Component{
         })
       }
     }
-    console.log("&&&&&&&&&&&&&&&&&&&&&&")
-    console.log(result)
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    // console.log(result)
     return result;
 
   //   <Timeline.Item >
@@ -273,8 +275,8 @@ class Notice extends Component{
         })
       }
     }
-    console.log("&&&&&&&&&&&&&&&&&&&&&&")
-    console.log(result)
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    // console.log(result)
     return result;
   }
 
@@ -286,12 +288,12 @@ class Notice extends Component{
     }),{withCredentials:true}
     )
     .then(function(response){
-      alert("删除成功")
+      message.success('删除成功！')
       axios.get(localStorage.api+'team/myNotice',{withCredentials:true})
       .then((resolve) => {
   
-        console.log("数据输出11111")
-        console.log(resolve.data)
+        // console.log("数据输出11111")
+        // console.log(resolve.data)
         // let data = resolve.data.bigTasks.samllTasks;
         // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
   
@@ -299,13 +301,13 @@ class Notice extends Component{
   
       })
       .catch((error) => {
+        message.error('获取通知失败！')
       })
 
     })
     .catch(function(err){
-      console.log("失败")
-      console.log(err)
-      alert("网络延迟过高")
+      message.error('删除失败！')
+
     })
 
 
@@ -328,8 +330,8 @@ class Notice extends Component{
         })
       }
     }
-    console.log("&&&&&&&&&&&&&&&&&&&&&&")
-    console.log(result)
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    // console.log(result)
     return result;
   }
 

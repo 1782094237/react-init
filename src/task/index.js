@@ -3,20 +3,18 @@ import ReactDOM from 'react-dom';
 import { connect } from "react-redux";
 import axios from 'axios';
 import qs from 'qs';
-import {fromJS, toJS, getIn} from 'immutable';
+import {fromJS} from 'immutable';
 
 import './style.css';
 
 import { actionCreator } from '../store';
 
-import { Form, Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input, Table, Divider, Tag, Collapse, DatePicker, Select } from 'antd';
+import { Form,  Button,  Row, Col,  message, Modal, Input, Table, Tag, Collapse, DatePicker, Select } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
-import Axios from 'axios';
-import { conditionalExpression } from '@babel/types';
 moment.locale('zh-cn');
 
 var E = require('wangeditor')
@@ -68,6 +66,7 @@ Date.prototype.Format = function(fmt)
 
 const getEndTime = (endTime) => {
   let date = new Date(endTime);
+  // console.log("输出日期"+date)
   return(
     <span>
     {
@@ -76,6 +75,14 @@ const getEndTime = (endTime) => {
   </span>
   )
 }
+
+const getEndTimeNumber = (endTime => {
+  let date = new Date(endTime);
+  // console.log("输出日期"+date)
+  return(
+     date.Format("yyyy-MM-dd")
+  )
+})
 const columns = [
   {
     title: '需求名称',
@@ -139,8 +146,8 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
 
       if(editor_1){
         const { data } = this.props;
-        console.log("data输出+++++++++++++++++++++++++++++++")
-        console.log(data.remark)
+        // console.log("data输出+++++++++++++++++++++++++++++++")
+        // console.log(data.remark)
         if(data.remark){
           editor_1.txt.html(data.remark)
         }else{
@@ -173,8 +180,8 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
         const { data } = this.props;
      
         editor_1.create()
-        console.log("data输出+++++++++++++++++++++++++++++++")
-        console.log(data.remark)
+        // console.log("data输出+++++++++++++++++++++++++++++++")
+        // console.log(data.remark)
         editor_1.txt.html(data.remark)
         editor_1.$textElem.attr('contenteditable', false)
         clearEdit_1=editor_1;
@@ -186,8 +193,8 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
 
     }
     componentDidUpdate(){
-      console.log("执行刷新***************************************")
-      console.log(hasFu_1)
+      // console.log("执行刷新***************************************")
+      // console.log(hasFu_1)
       if(this.props.visible && !hasFu_1){
         setTimeout(() => {
           this.getEditor()
@@ -199,11 +206,16 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
       const result = [];
       if(this.props.peopleInfo){
         this.props.peopleInfo.studentsInfo.map((value,index) => {
-          console.log(value)
+          // console.log(value)
         })
       }
       // <Option value={this}>male</Option>
       return <Option value='1'>male</Option>;
+    }
+
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current < moment().endOf('day');
     }
     
     render() {
@@ -258,9 +270,9 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
               </Form.Item>
               <Form.Item label="日期">
                 {getFieldDecorator('date-picker', {rules: [{  required: true, message: 'Please select time!' }],
-                initialValue:moment(data.endTime, 'yyyy:mm:dd')
+                initialValue:moment(getEndTimeNumber(data.endTime))
               })(
-                  <DatePicker  disabled />
+                  <DatePicker disabled />
                 )}
               </Form.Item>
 
@@ -300,19 +312,22 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
       // editor_1 = false;
     }
     getEditor(){
-      console.log("获取富文本"+editor)
+      // console.log("获取富文本"+editor)
       if(editor){
 
       }else{
         editor = new E(ReactDOM.findDOMNode(this._div))
+
         editor.customConfig.onchange = (html) => {
           //将html值设为form表单的desc属性值
-          console.log("输出html***************************************************"+editor.txt.html())
-          console.log(editor.txt.html())
+          // console.log("输出html***************************************************"+editor.txt.html())
+          // console.log(editor.txt.html())
           this.props.form.setFieldsValue({
             'desc': html
           });
         }
+        
+
         editor.customConfig.menus = [
           'head',  // 标题
           'bold',  // 粗体
@@ -337,13 +352,17 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         setTimeout(() => {this.getEditor()})
       }
     }
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current < moment().endOf('day');
+    }
 
     render() {
       
       const { visible, onCancel, onOk, form, option, data } = this.props;
       const { getFieldDecorator } = form;
-      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-      console.log(data)
+      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+      // console.log(data)
 
       return (
         <Modal
@@ -383,7 +402,12 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 )}
               </Form.Item>
               <Form.Item label="日期">
-                {getFieldDecorator('date-picker', {rules: [{  required: true, message: 'Please select time!' }]})(<DatePicker />)}
+                {getFieldDecorator('date-picker', {rules: [{  required: true, message: 'Please select time!' }]})(
+                <DatePicker
+                  format="YYYY-MM-DD"
+                  disabledDate={this.disabledDate.bind(this)}
+                />
+                )}
               </Form.Item>
               </Col>
             </Row>
@@ -414,14 +438,14 @@ class Task extends Component{
 
     axios.get(localStorage.api+'/team/info',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       // let data = resolve.data.bigTasks.samllTasks;
       // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
       this.props.handleSetPeopleInfo(resolve.data)
     })
     .catch((error) => {
-      alert("网络有延迟过高！")
+      message.error('获取小组信息失败！')
     })
 
         // axios.post(localStorage.api+'files/allFiles',qs.stringify({
@@ -451,8 +475,8 @@ class Task extends Component{
       if (err) {
         return;
       }
-      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-      console.log('Received values of form: ', values);
+      // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+      // console.log('Received values of form: ', values);
       // {title: "213", desc: "<p>内从</p>", gender: "female", date-picker: Moment}
       // {userSex: "男", userClass: "zy1602", userCollege: "计算机科学与技术学院", userProfessional: "计算机科学与技术", userName: "陈小路"}
       // userClass: "zy1602"
@@ -461,12 +485,12 @@ class Task extends Component{
       // userName: "何金超"
       // userProfessional: "计算机科学与技术"
       // userSex: "男"
-      console.log("************************")
-      console.log(values['date-picker'])
+      // console.log("************************")
+      // console.log(values['date-picker'])
       let d = new Date(values['date-picker']['_d'])
       var datetime=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); 
       // console.log(this.props.taskData.bigTasks[0].id)
-      console.log(this.props.taskData.getIn(['bigTasks',0,'id']))
+      // console.log(this.props.taskData.getIn(['bigTasks',0,'id']))
       // {title: "223", desc: "<p>132</p>", gender: "0121610870807", date-picker: Moment}
       
         // workerId:values['gender'],
@@ -474,7 +498,7 @@ class Task extends Component{
         // desc:values['desc'],
         // itemId:this.props.taskData.bigTasks[0].id,
         // endTime:datetime
-      console.log(datetime)
+      // console.log(datetime)
       
       axios.post(localStorage.api+'team/addSmallTask',qs.stringify({
         workerId:values['gender'],
@@ -486,8 +510,9 @@ class Task extends Component{
       }),{withCredentials:true}
       )
       .then(function(response){
-        console.log("成功")
-        console.log(response.data)
+        message.success('分配成功！')
+        // console.log("成功")
+        // console.log(response.data)
         if(clearEdit){
           clearEdit.txt.clear();
         }
@@ -495,9 +520,9 @@ class Task extends Component{
         that.resetTask();
       })
       .catch(function(err){
-        console.log("失败")
-        console.log(err)
-        alert("网络延迟过高")
+        message.error('分配失败！')
+        // console.log("失败")
+        // console.log(err)
       })
 
       // axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
@@ -527,13 +552,13 @@ class Task extends Component{
 
   handleOk_1(){
     const that = this;
-    console.log("%%%%%%%%%%%")
+    // console.log("%%%%%%%%%%%")
     const { form } = this.formRef_1.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
+      // console.log('Received values of form: ', values);
      
       // date-picker: Moment {_isAMomentObject: true, _i: 1574784000000, _f: "yyyy:mm:dd", _isUTC: false, _pf: {…}, …}
       // desc: "<p>content</p>"
@@ -542,26 +567,27 @@ class Task extends Component{
       // title: "2133"
       // let d = new Date(values['date-picker']['_d'])
       // var datetime=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); 
-      console.log(this.props.demandSmall.id)
-      console.log("++++++++++++++++++++++++++++++")
-      console.log(values['station'])
+      // console.log(this.props.demandSmall.id)
+      // console.log("++++++++++++++++++++++++++++++")
+      // console.log(values['station'])
       axios.post(localStorage.api+'team/changeSmallTask',qs.stringify({
         id:this.props.demandSmall.id,
         status:values['station']
       }),{withCredentials:true}
       )
       .then(function(response){
-        console.log("成功")
-        console.log(response.data)
+        message.success('状态改变成功！')
+        // console.log("成功")
+        // console.log(response.data)
         if(clearEdit_1){
           clearEdit_1.txt.clear();
         }
         that.resetTask();
       })
       .catch(function(err){
-        console.log("失败")
-        console.log(err)
-        alert("网络延迟过高！")
+        message.error('状态改变失败！')
+        // console.log("失败")
+        // console.log(err)
       })
 
 
@@ -597,7 +623,7 @@ class Task extends Component{
     })
     if(judge){
       if(this.props.taskData.getIn(['bigTasks',0,'status']) == '已完成'){
-        alert("请勿重复提交！")
+        message.error('请勿重复提交！')
       }else{
       
       axios.post(localStorage.api+'team/bigStatus',qs.stringify({
@@ -606,16 +632,16 @@ class Task extends Component{
       }),{withCredentials:true}
       )
       .then(function(response){
-        alert("提交成功")
-        console.log("成功")
-        console.log(response.data)
-        console.log("执行到这里+++++++++++++++++++++++")
-        console.log(that.props.taskData.toJS())
+        message.success('提交成功！')
+        // console.log("成功")
+        // console.log(response.data)
+        // console.log("执行到这里+++++++++++++++++++++++")
+        // console.log(that.props.taskData.toJS())
       })
       .catch(function(err){
-        console.log("失败")
-        console.log(err)
-        alert("网络延迟过高")
+        message.error('提交失败！')
+        // console.log("失败")
+        // console.log(err)
       })
 
       axios.post(localStorage.api+'team/bigStatus',qs.stringify({
@@ -624,23 +650,23 @@ class Task extends Component{
       }),{withCredentials:true}
       )
       .then(function(response){
-        console.log("成功")
-        console.log(response.data)
-        console.log("执行到这里+++++++++++++++++++++++")
+        // console.log("成功")
+        // console.log(response.data)
+        // console.log("执行到这里+++++++++++++++++++++++")
               //获取所有任务，刷新任务
               that.resetTask();
 
       })
       .catch(function(err){
-        console.log("失败")
-        console.log(err)
-        alert("网络延迟过高")
+        // console.log("失败")
+        // console.log(err)
+        message.error('下一状态改变失败！')
       })
     }
       
       
     }else{
-      alert("任务未完成！")
+      message.error('任务未完成！')
     }
 
   }
@@ -649,24 +675,24 @@ class Task extends Component{
     //获取所有任务，刷新任务
     axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出***************************")
+      // console.log("数据输出***************************")
       // console.log(resolve.data.bigTasks[0].smallTasks)
       // resolve.data.bigTasks[0].smallTasks.reverse();
       // let data = resolve.data.bigTasks.samllTasks;
       this.props.handleSetTaskData(fromJS(resolve.data));
-      console.log("**************************")
+      // console.log("**************************")
       // console.log(this.props.taskData.bigTasks[0].smallTasks)
-      console.log(this.props.taskData.getIn(['bigTasks',0,'smallTasks']))
+      // console.log(this.props.taskData.getIn(['bigTasks',0,'smallTasks']))
     })
     .catch((error) => {
-      alert("网络延迟过高")
+      message.error('获取任务信息失败！')
     })
   }
 
   selectTable(record,rowkey){
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@")
-    console.log(record);
-    console.log(rowkey);
+    // console.log("@@@@@@@@@@@@@@@@@@@@@@@@")
+    // console.log(record);
+    // console.log(rowkey);
     this.props.handleSetDemandSmall(record)
     this.props.handleSetTaskStation(true)
   }
@@ -674,10 +700,10 @@ class Task extends Component{
   getOption(){
     const result = [];
     if(this.props.peopleInfo){
-      console.log("________________")
+      // console.log("________________")
       if( this.props.peopleInfo.size !== 0){
         this.props.peopleInfo.studentsInfo.map((value,index) => {
-        console.log(value)
+        // console.log(value)
         result.push(
         <Option value={value.userId}>{value.userName}</Option>
         )

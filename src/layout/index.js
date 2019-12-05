@@ -35,7 +35,7 @@ import TeamPeople from '../teamPeople';
 import Notice from '../notice'
 
 
-import { Layout, Menu, Button, Dropdown, Icon } from 'antd';
+import { Layout, Menu, message, Dropdown, Icon } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -105,8 +105,8 @@ class Lay extends Component{
   }
 
   getName(){
-    console.log("&&&&&&&&&&&&&&&&^^^^^^^^^^^^^")
-    console.log(this.props.personal.name)
+    // console.log("&&&&&&&&&&&&&&&&^^^^^^^^^^^^^")
+    // console.log(this.props.personal.name)
     if(this.props.personal.name){
       if (this.props.personal.name.length ==2){
         return this.props.personal.name
@@ -121,8 +121,8 @@ class Lay extends Component{
     
 
     if(this.props.teamInfo.nowTask){
-      console.log("获取状态成功")
-      console.log(this.props.taskData)
+      // console.log("获取状态成功")
+      // console.log(this.props.taskData)
       if(this.props.taskData){
 
 
@@ -151,19 +151,18 @@ componentDidMount(){
       //获取所有任务，刷新任务
       axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
       .then((resolve) => {
-        console.log("数据输出888888888888888888888888888")
+        // console.log("数据输出888888888888888888888888888")
         resolve.data.bigTasks[0].smallTasks.reverse();
-        console.log(resolve.data)
+        // console.log(resolve.data)
         // console.log(resolve.data.bigTasks[0].smallTasks)
 
         // let data = resolve.data.bigTasks.samllTasks;
         this.props.handleSetTaskData(fromJS(resolve.data));
-        console.log("**************************")
         // console.log(this.props.taskData.bigTasks[0].smallTasks)
-        console.log(this.props.taskData.getIn(['bigTasks',0,'smallTasks']))
+        // console.log(this.props.taskData.getIn(['bigTasks',0,'smallTasks']))
       })
       .catch((error) => {
-        alert("网络延迟过高")
+        message.error('获取任务信息失败！')
       })
 }
 
@@ -171,9 +170,10 @@ lgout(){
   axios.get(localStorage.api+"logout",{withCredentials:true})
     .then((resolve) => {
       this.props.handleSetLogin(0)
+      message.success('注销成功！')
     })
     .catch((error) => {
-      console.log(error)
+      message.error('注销失败！')
     })
 }
 
@@ -310,7 +310,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return ({
     handleSelectItem(e){
-      console.log(e)
+      // console.log(e)
           const action = actionCreator.setItemNumber(e.key);
           dispatch(action);
       },

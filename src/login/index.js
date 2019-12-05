@@ -7,7 +7,7 @@ import './style.css';
 
 import { actionCreator } from '../store';
 
-import { Layout, Menu, Button, Dropdown, Icon,Form, Input, Checkbox, Modal } from 'antd';
+import {  Button, Icon,Form, Input, Modal, message } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -83,42 +83,12 @@ class LoginForm extends Component{
                     });
         }else{
           //登陆成功
-          console.log("登錄成功")
-          console.log("333333333333333333333")
           that.props.handleSetLogin(1);
-
-
-          // axios.get(localStorage.api+'team/info',{withCredentials:true})
-          // .then((resolve) => {
-          //   console.log("获取信息成功33333333333333333333333")
-          //   that.props.handleSetTeamInfo(resolve.data.teamInfo)
-          //   let result = {};
-          //   for(let i = 0 ; i < resolve.data.studentsInfo.length; i++){
-          //     console.log("123"+response.data.userMap.id)
-          //     if(response.data.userMap.id == resolve.data.studentsInfo[i].userId){
-
-
-          //       result = {
-          //         id:response.data.userMap.id,
-          //         name:response.data.userMap.userName,
-          //         class:response.data.userMap.userClass,
-          //         identity:resolve.data.studentsInfo[i].identity.split(',')
-          //       }
-          //       that.props.handleSetPersonal(result);
-          //       break;
-          //     }
-          //   }
-      
-          // })
-          // .catch((error) => {
-          //   console.log("获取信息失敗3333333333333333333")
-          //   console.log(error)
-          // })
+          message.success('登陆成功！');
         }
       })
       .catch(function(err){
-        console.log("登錄失敗")
-        console.log(err)
+        message.error('登陆失败！');
         // that.props.handleSetLogin(1);
       })
   }

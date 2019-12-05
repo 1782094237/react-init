@@ -8,11 +8,13 @@ import axios from 'axios'
 import Lay from './layout'
 import Login from './login'
 
+import { message } from 'antd';
 
-class IfLogin extends PureComponent {
+
+class IfLogin extends Component {
 
   getCookie(name){
-    console.log(document.cookie)
+    // console.log(document.cookie)
     if (document.cookie.length>0)
     {
       let start=document.cookie.indexOf(name + "=")//返回某指定值在字符串中首次出现的位置。
@@ -35,13 +37,13 @@ class IfLogin extends PureComponent {
       axios.get(localStorage.api+'userMes',{withCredentials:true})
         .then(
           (response) => {
-          console.log("是否循环")
+          // console.log("是否循环")
           axios.get(localStorage.api+'team/info',{withCredentials:true})
           .then((resolve) => {
-            console.log("获取信息成功33333333333333333333333")
+            // console.log("获取信息成功33333333333333333333333")
             that.props.handleSetTeamInfo(resolve.data.teamInfo)
             let result = {};
-            console.log("123"+response.data.id)
+            // console.log("123"+response.data.id)
             for(let i = 0 ; i < resolve.data.studentsInfo.length; i++){
               if(response.data.id == resolve.data.studentsInfo[i].userId){
                 
@@ -58,8 +60,7 @@ class IfLogin extends PureComponent {
           })
         }) 
         .catch((error) => {
-          console.log("获取信息失敗3333333333333333333")
-          console.log(error)
+          message.error('获取用户信息失败！')
         })
         // return <Lay></Lay>
     }else{
@@ -69,7 +70,9 @@ class IfLogin extends PureComponent {
   }
 
   getLogin(){
-    console.log(this.ifLogin()+"88888")
+    this.ifLogin()
+
+    // console.log(this.ifLogin()+"88888")
     if(this.props.secondLogin == false){
       return <Login></Login>
     }else{

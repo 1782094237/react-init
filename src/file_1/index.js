@@ -8,13 +8,12 @@ import './style.css';
 
 import { actionCreator } from '../store';
 
-import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input,Popconfirm } from 'antd';
+import {  Button,  Icon, Row, Col, Upload, message, Modal, Input,Popconfirm } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
-import Axios from 'axios';
 moment.locale('zh-cn');
 const { confirm } = Modal;
 
@@ -34,7 +33,7 @@ class File extends Component{
 
   resetFile(){
     let nowFile = this.props.file;
-    console.log("____________________")
+    // console.log("____________________")
     // console.log(nowFile.toJS())
     for(let i = 1; i < idStack.length; i++ ){
       for(let j = 0; j < nowFile.size; j++){
@@ -47,21 +46,22 @@ class File extends Component{
   }
 
   getFile(){
-    console.log("先执行")
+    // console.log("先执行")
     if(nowFileId == this.props.fileId){
       const that = this;
       axios.post(localStorage.api+'files/allFiles',qs.stringify({
         item: that.props.fileId,
       }),{withCredentials:true})
         .then(function(response){
-          console.log("获取文件成功77777")
-          console.log(response.data)
+          // console.log("获取文件成功77777")
+          // console.log(response.data)
           that.props.handleSetFile(fromJS(response.data))
           that.resetFile()
         })
         .catch(function(err){
-          console.log("获取文件失败")
-          console.log(err)
+          // console.log("获取文件失败")
+          // console.log(err)
+          message.error('获取文件信息失败！')
         })
     }else{
       nowFileId = this.props.fileId;
@@ -72,13 +72,14 @@ class File extends Component{
         item: that.props.fileId,
       }),{withCredentials:true})
         .then(function(response){
-          console.log("获取文件成功7777")
-          console.log(response.data)
+          // console.log("获取文件成功7777")
+          // console.log(response.data)
           that.props.handleSetFile(fromJS(response.data))
           that.resetFile()
         })
         .catch(function(err){
-          console.log(err)
+          // console.log(err)
+          message.error('获取文件信息失败！')
         })
     }
 
@@ -151,30 +152,28 @@ class File extends Component{
   //     window.URL.revokeObjectURL(blobUrl);
   // })
 
-  axios.request({
-    url: src,
-    method: 'get',
-    params: {},
-    responseType: 'blob'
-  })
-.then( res => {
-  let blob = new Blob([res], {type: res.type})
-  let downloadElement = document.createElement('a')
-  let href = window.URL.createObjectURL(blob); //创建下载的链接
-  downloadElement.href = href;
-  downloadElement.download = name; //下载后文件名
-  document.body.appendChild(downloadElement);
-  downloadElement.click(); //点击下载
-  document.body.removeChild(downloadElement); //下载完成移除元素
-  window.URL.revokeObjectURL(href); //释放blob对象
- })
+  fetch(src).then(res => res.blob()).then(blob => {
+    const a = document.createElement('a');
+    document.body.appendChild(a)
+    a.style.display = 'none'
+    // 使用获取到的blob对象创建的url
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    // 指定下载的文件名
+    a.download = name;
+    a.click();
+    document.body.removeChild(a)
+    // 移除blob对象的url
+    window.URL.revokeObjectURL(url);
+  });
+
 
   }
 
   view(src){
-    console.log("执行这里啊11111111111111111---------------------")
-    console.log(src)
-    console.log(encodeURIComponent('http://27y6v05022.wicp.vip:40292/stuFiles/team1/item1/7701665774a64df7b914cbcdd3ffd1e1_Emmet语法.doc'))
+    // console.log("执行这里啊11111111111111111---------------------")
+    // console.log(src)
+    // console.log(encodeURIComponent('http://27y6v05022.wicp.vip:40292/stuFiles/team1/item1/7701665774a64df7b914cbcdd3ffd1e1_Emmet语法.doc'))
     // let url = 'https://view.officeapps.live.com/op/view.aspx?src=./test.docx';
     // window.open(url,'_blank');
     
@@ -224,7 +223,7 @@ class File extends Component{
 
   getIcon(name,type){
     if(type == '文件夹'){
-      console.log("执行")
+      // console.log("执行")
       return (
         <svg className="file-icon" aria-hidden="true">
           <use xlinkHref="#icon-folder__easyi"></use>
@@ -327,7 +326,7 @@ class File extends Component{
   }
 
   inFloder(id){
-    console.log("进入")
+    // console.log("进入")
     let array = this.props.showFile;
     for(let i = 0; i< array.size; i++){
       if(id == array.getIn([i,'id'])){
@@ -345,7 +344,7 @@ class File extends Component{
   }
 
   getDelete(creatorId,fileId,type){
-    console.log("删除id"+creatorId)
+    // console.log("删除id"+creatorId)
     if(this.props.personal.identity.contains("组长") || creatorId == this.props.personal.id){
 
       if(type == "文件夹"){
@@ -374,15 +373,14 @@ class File extends Component{
       }),{withCredentials:true}
       )
       .then(function(response){
-
-        alert("删除成功")
+        message.success('删除成功！')
         that.getFile()
         
       })
       .catch(function(err){
-        console.log("失败")
-        console.log(err)
-        alert("网络延迟过高")
+        message.error('删除失败！')
+        // console.log("失败")
+        // console.log(err)
       })
   }
 
@@ -401,13 +399,13 @@ class File extends Component{
 
   getData(){
     let array = this.props.showFile;
-    console.log("测试array");
-    console.log(array)
+    // console.log("测试array");
+    // console.log(array)
     // console.log(array.toJS())
     let result = [];
     for(let i = 0; i< array.size; i++){
-      console.log("$$$$$$$$$$")
-      console.log(array.getIn([i,'type']))
+      // console.log("$$$$$$$$$$")
+      // console.log(array.getIn([i,'type']))
       result.push( 
         // 
         <Row  key = { array.getIn([i,'id']) } className="file-sub">
@@ -455,10 +453,10 @@ class File extends Component{
     title: '请输入文件夹名称',
     content: <div><br/><Input id="floder" placeholder="Basic usage" /></div>,
     onOk() {
-      console.log("执行xxxxxxxxxxxxxxxxxx")
-      console.log(idStack[idStack.length-1][0])
+      // console.log("执行xxxxxxxxxxxxxxxxxx")
+      // console.log(idStack[idStack.length-1][0])
       if(document.getElementById('floder').value == ""){
-        alert("文件夹名不能为空!")
+        message.error('文件夹名不能为空!')
       }else{
         axios.post(localStorage.api+'files/newFolder',qs.stringify({
           item: that.props.fileId,
@@ -466,12 +464,14 @@ class File extends Component{
           folderName:document.getElementById('floder').value
         }),{withCredentials:true})
         .then((response) => {
+          message.success('新建文件夹成功！')
           that.getFile()
-          console.log(response)
+          // console.log(response)
         })
         .catch((err) => {
+          message.error('新建文件夹失败！')
   
-          console.log(err)
+          // console.log(err)
         })
       }
 
@@ -481,8 +481,8 @@ class File extends Component{
  }
 
  getBack(id){
-   console.log("开始返回")
-   console.log(id)
+  //  console.log("开始返回")
+  //  console.log(id)
   let nowFile = this.props.file;
   if( id !== 0 ){
   bott:
@@ -526,7 +526,7 @@ class File extends Component{
 
   render() {
     //后端 文件上传接口
-    console.log(this.props.fileId)
+    // console.log(this.props.fileId)
     const that = this;
     const props = {
       name: 'upload',
@@ -542,9 +542,9 @@ class File extends Component{
       // },
       onChange(info) {
         if (info.file.status !== 'uploading') {
-          console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-          console.log(info.file)
-          console.log(info.fileList);
+          // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+          // console.log(info.file)
+          // console.log(info.fileList);
         }
         if (info.file.status === 'done') {
 
@@ -558,14 +558,14 @@ class File extends Component{
               message.error(`${info.file.name} 上传失败.`);
             }
           }else{
-            console.log("完成")
+            // console.log("完成")
             message.success(`${info.file.name} file uploaded successfully`);
             that.getFile()
           }
 
 
         } else if (info.file.status === 'error') {
-          console.log("失败")
+          // console.log("失败")
           message.error(`${info.file.name} file upload failed.`);
         }
       },

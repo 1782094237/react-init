@@ -8,13 +8,12 @@ import './style.css';
 
 import { actionCreator } from '../store';
 
-import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input, Table, Divider, Tag, Collapse, Form, Select, DatePicker } from 'antd';
+import {  message, Modal, Input, Table,  Tag, Collapse, Form, Select } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
-import Axios from 'axios';
 moment.locale('zh-cn');
 
 const { Panel } = Collapse;
@@ -89,15 +88,16 @@ class TeamPeople extends Component{
 
     axios.get(localStorage.api+'team/info',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       // let data = resolve.data.bigTasks.samllTasks;
       // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
       this.props.handleSetPeopleInfo(resolve.data)
-      console.log("^^^^^^^^^^^^^^^^^^^^")
-      console.log(this.props.peopleInfo.studentsInfo)
+      // console.log("^^^^^^^^^^^^^^^^^^^^")
+      // console.log(this.props.peopleInfo.studentsInfo)
     })
     .catch((error) => {
+      message.error('获取小组信息失败！')
     })
 
   }
@@ -203,9 +203,9 @@ class TeamPeople extends Component{
       if (err) {
         return;
       }
-      console.log('Received values of form: ', values);
-      console.log(values.gender.join(','))
-      console.log(this.props.peopleSmall)
+      // console.log('Received values of form: ', values);
+      // console.log(values.gender.join(','))
+      // console.log(this.props.peopleSmall)
       const taskId=[];
       values.gender.map((value,index) => {
         switch(value){
@@ -223,7 +223,7 @@ class TeamPeople extends Component{
             break;
         }
       })
-      console.log(taskId.join(','))
+      // console.log(taskId.join(','))
       const that = this;
 
       axios.post(localStorage.api+'team/bigWorker',qs.stringify({
@@ -232,30 +232,26 @@ class TeamPeople extends Component{
       }),{withCredentials:true}
       )
       .then(function(response){
-        console.log("成功")
-        console.log(response.data)
+        message.success('更改权限成功！')
+        // console.log("成功")
+        // console.log(response.data)
         axios.get(localStorage.api+'team/info',{withCredentials:true})
         .then((resolve) => {
-          console.log("数据输出11111")
-          console.log(resolve.data)
+          // console.log("数据输出11111")
+          // console.log(resolve.data)
           // let data = resolve.data.bigTasks.samllTasks;
           // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
           that.props.handleSetPeopleInfo(resolve.data)
         })
         .catch((error) => {
-          alert("失败")
+          message.error('获取小组信息失败！')
         })
       })
       .catch(function(err){
-        console.log("失败")
-        console.log(err)
-        alert("网络延迟高")
+        // console.log("失败")
+        // console.log(err)
+        message.error('更改权限失败！')
       })
-
-
-
-
-
       form.resetFields();
       this.props.handleSetPeople(false)
     });

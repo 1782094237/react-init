@@ -14,7 +14,6 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
-import Axios from 'axios';
 moment.locale('zh-cn');
 
 const { Panel } = Collapse;
@@ -333,7 +332,7 @@ class TeamInfo extends Component{
         <Row>
           <Col span={16}>
           <div className="info-title">
-              软件工程项目名称
+              {this.props.teamInfo.teamTitle}
             </div>
             <div className="info-left">
               项目动态
