@@ -20,6 +20,16 @@ moment.locale('zh-cn');
 const { Panel } = Collapse;
 const { Option } = Select;
 
+Array.prototype.contains = function(obj){
+  let i = this.length;
+  while(i--){
+    if(this[i] === obj){
+      return true;
+    }
+  }
+  return false; 
+}
+
 
 
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
@@ -151,18 +161,26 @@ class TeamPeople extends Component{
       {
         title: 'Edit',
         key: 'edit',
-        render: (text, record) => (
-            <a>编辑</a>
-        ),
+        render: (text, record) => {
+          if(this.props.personal.identity.contains("组长")){
+            return <a>编辑</a>
+          }else{
+            return <a>无权限</a>
+          }
+        },
       },
     ];
     return(
       <Fragment>
         <Table columns={columns} pagination={setting} dataSource={this.props.peopleInfo.studentsInfo}
            onRow={(record,rowkey)=>{
-             return{
-               onClick : this.selectTable.bind(this,record,rowkey)    //点击行 record 指的本行的数据内容，rowkey指的是本行的索引         
-             }     
+             if(this.props.personal.identity.contains("组长")){
+               return {
+                 onClick : this.selectTable.bind(this,record,rowkey)
+               }
+             }else{
+               return {}
+             }   
            }}
         />
 
@@ -259,7 +277,8 @@ const mapStateToProps = (state) => {
     // showFile:state.getIn(['showFile'])
     changePeople:state.getIn(['changePeople']),
     peopleInfo:state.getIn(['peopleInfo']),
-    peopleSmall:state.getIn(['peopleSmall'])
+    peopleSmall:state.getIn(['peopleSmall']),
+    personal:state.getIn(['personal'])
   })
 }
 

@@ -242,7 +242,7 @@ class Notice extends Component{
         this.props.notice.groupNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )
@@ -266,7 +266,7 @@ class Notice extends Component{
         this.props.notice.teacherNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )
@@ -278,6 +278,39 @@ class Notice extends Component{
     return result;
   }
 
+  deleteNotice(id){
+    
+    const that = this;
+    axios.post(localStorage.api+'team/deleteNotice',qs.stringify({
+      noticeId:id,
+    }),{withCredentials:true}
+    )
+    .then(function(response){
+      alert("删除成功")
+      axios.get(localStorage.api+'team/myNotice',{withCredentials:true})
+      .then((resolve) => {
+  
+        console.log("数据输出11111")
+        console.log(resolve.data)
+        // let data = resolve.data.bigTasks.samllTasks;
+        // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
+  
+        that.props.handleSetNotice(resolve.data)
+  
+      })
+      .catch((error) => {
+      })
+
+    })
+    .catch(function(err){
+      console.log("失败")
+      console.log(err)
+      alert("网络延迟过高")
+    })
+
+
+  }
+
   getMyTimeItem(){
     let result = [];
     if(this.props.notice){
@@ -285,7 +318,10 @@ class Notice extends Component{
         this.props.notice.myNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p>
+                    <a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} 
+                    <a onClick={this.deleteNotice.bind(this,value.id)} style={{float:'right'}}>删除</a>
+                  </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )

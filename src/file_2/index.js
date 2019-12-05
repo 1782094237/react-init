@@ -8,7 +8,7 @@ import './style.css';
 
 import { actionCreator } from '../store';
 
-import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input } from 'antd';
+import { Layout, Menu, Button, Dropdown, Icon, Row, Col, Upload, message, Modal, Input,Popconfirm } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -21,35 +21,46 @@ const { confirm } = Modal;
 
 let nowFileId = 0;
 let idStack = [['0',"所有文件"]];
-class File_2 extends Component{
+Array.prototype.contains = function (obj) {
+  var i = this.length;
+  while (i--) {
+      if (this[i] === obj) {
+          return true;
+      }
+  }
+  return false;
+}
+class File extends Component{
 
   resetFile(){
     let nowFile = this.props.file;
     console.log("____________________")
-    console.log(nowFile.toJS())
+    // console.log(nowFile.toJS())
     for(let i = 1; i < idStack.length; i++ ){
       for(let j = 0; j < nowFile.size; j++){
         if(idStack[i][0] == nowFile.getIn([j,"id"])){
-          nowFile = nowFile.getIn([j,"file"]);
+          nowFile = nowFile.getIn([j,"files"]);
         }
       }
     }
-    this.props.handleSetShowFile(nowFile)
+    this.props.handleSetShowFile(fromJS(nowFile))
   }
 
   getFile(){
+    console.log("先执行")
     if(nowFileId == this.props.fileId){
       const that = this;
       axios.post(localStorage.api+'files/allFiles',qs.stringify({
         item: that.props.fileId,
       }),{withCredentials:true})
         .then(function(response){
-          console.log("获取文件成功111111")
-          console.log(response.data.file)
-          that.props.handleSetFile(fromJS(response.data.file))
+          console.log("获取文件成功77777")
+          console.log(response.data)
+          that.props.handleSetFile(fromJS(response.data))
           that.resetFile()
         })
         .catch(function(err){
+          console.log("获取文件失败")
           console.log(err)
         })
     }else{
@@ -61,9 +72,9 @@ class File_2 extends Component{
         item: that.props.fileId,
       }),{withCredentials:true})
         .then(function(response){
-          console.log("获取文件成功111111")
-          console.log(response.data.file)
-          that.props.handleSetFile(fromJS(response.data.file))
+          console.log("获取文件成功7777")
+          console.log(response.data)
+          that.props.handleSetFile(fromJS(response.data))
           that.resetFile()
         })
         .catch(function(err){
@@ -109,11 +120,55 @@ class File_2 extends Component{
 
   download(src,name){
     //下载文件
-    console.log("开始下载")
-    var a = document.createElement('a');
-    a.href = src;
-    a.download = name;
-    a.click();
+    // console.log("开始下载")
+    // var a = document.createElement('a');
+    // a.href = src;
+    // a.download = name;
+    // a.click();
+
+
+
+  //   axios({
+  //     method: 'get',
+  //     url: src,
+  //     // 必须显式指明响应类型是一个Blob对象，这样生成二进制的数据，才能通过window.URL.createObjectURL进行创建成功
+  //     responseType: 'blob',
+  //   }).then((res) => {
+  //     if (!res) {
+  //         return
+  //     }
+  //     // 将lob对象转换为域名结合式的url
+  //     let blobUrl = window.URL.createObjectURL(res.data)
+  //     let link = document.createElement('a')
+  //     document.body.appendChild(link)
+  //     link.style.display = 'none'
+  //     link.href = blobUrl
+  //     // 设置a标签的下载属性，设置文件名及格式，后缀名最好让后端在数据格式中返回
+  //     link.download = name
+  //     // 自触发click事件
+  //     link.click()
+  //     document.body.removeChild(link)
+  //     window.URL.revokeObjectURL(blobUrl);
+  // })
+
+  axios.request({
+    url: src,
+    method: 'get',
+    params: {},
+    responseType: 'blob'
+  })
+.then( res => {
+  let blob = new Blob([res], {type: res.type})
+  let downloadElement = document.createElement('a')
+  let href = window.URL.createObjectURL(blob); //创建下载的链接
+  downloadElement.href = href;
+  downloadElement.download = name; //下载后文件名
+  document.body.appendChild(downloadElement);
+  downloadElement.click(); //点击下载
+  document.body.removeChild(downloadElement); //下载完成移除元素
+  window.URL.revokeObjectURL(href); //释放blob对象
+ })
+
   }
 
   view(src){
@@ -142,6 +197,31 @@ class File_2 extends Component{
   //   }
   // }
 
+  getEye(name){
+    let getAfter = name.split('.').length;
+    let afterWord = name.split('.')[getAfter-1]
+    const files = ['doc','docx','xls','xlsx','ppt','pptx','pdf','txt','gif','jpg','png','psd','mp3','avi','wmv','mov','mp4']
+    for(let i = 0; i < files.length; i++){
+      if(files[i] == afterWord){
+        return true
+      }
+    }
+    return false;
+  }
+
+  getDown(name){
+    let getAfter = name.split('.').length;
+    let afterWord = name.split('.')[getAfter-1]
+    const files = ['gif','jpg','png','psd','mp3','avi','wmv','mov','mp4']
+    
+    for(let i = 0; i < files.length; i++){
+      if(files[i] == afterWord){
+        return false
+      }
+    }
+    return true;
+  }
+
   getIcon(name,type){
     if(type == '文件夹'){
       console.log("执行")
@@ -162,6 +242,7 @@ class File_2 extends Component{
           )
 
         case 'xls':
+        case 'xlsx':
           return(
             <svg className="file-icon" aria-hidden="true">
               <use xlinkHref="#icon-file_excel_office"></use>
@@ -212,7 +293,6 @@ class File_2 extends Component{
 
         case 'midi':
         case 'mp3':
-        case 'mp3':
         case 'wma':
         case 'wave':
         case 'rm':
@@ -229,6 +309,7 @@ class File_2 extends Component{
         case 'rm':
         case 'rmvb':
         case 'mov':
+        case 'mp4':
           return(
             <svg className="file-icon" aria-hidden="true">
             <use xlinkHref="#icon-file_video"></use>
@@ -253,7 +334,7 @@ class File_2 extends Component{
         
         if(array.getIn([i,'type']) == '文件夹'){
 //点击文件夹  进入
-          this.props.handleSetShowFile(array.getIn([i,'file']))
+          this.props.handleSetShowFile(array.getIn([i,'files']))
           idStack.push([array.getIn([i,'id']),array.getIn([i,'name'])])
         }else{
 //点击文件  view
@@ -263,38 +344,103 @@ class File_2 extends Component{
     }
   }
 
+  getDelete(creatorId,fileId,type){
+    console.log("删除id"+creatorId)
+    if(this.props.personal.identity.contains("组长") || creatorId == this.props.personal.id){
+
+      if(type == "文件夹"){
+        return (  
+          <Popconfirm title="是否删除文件夹内所有文件？" okText="Yes" cancelText="No" onConfirm={this.deleteFile.bind(this,fileId,type)}>
+            <a>删除</a>
+          </Popconfirm>
+        )   
+      }else{
+        return (
+          <Popconfirm title="是否删除文件？" okText="Yes" cancelText="No" onConfirm={this.deleteFile.bind(this,fileId,type)}>
+            <a>删除</a>
+          </Popconfirm>
+        )
+      }
+
+      // <a onClick={this.deleteFile.bind(this,fileId,type)}>删除</a>
+    }
+  }
+
+  deleteFile(fileId,type,e){
+    const that = this;
+
+      axios.post(localStorage.api+'files/deleteFile',qs.stringify({
+        fileId:fileId
+      }),{withCredentials:true}
+      )
+      .then(function(response){
+
+        alert("删除成功")
+        that.getFile()
+        
+      })
+      .catch(function(err){
+        console.log("失败")
+        console.log(err)
+        alert("网络延迟过高")
+      })
+  }
+
+  getClick(array,name){
+
+    let getAfter = name.split('.').length;
+    let afterWord = name.split('.')[getAfter-1]
+    const files = ['doc','docx','xls','xlsx','ppt','pptx']
+
+    if(files.contains(afterWord)){
+      return this.view.bind(this,array.getIn(['pdfSrc']))
+    }else{
+      return this.view.bind(this,array.getIn(['src']))
+    }
+  }
+
   getData(){
     let array = this.props.showFile;
-    console.log("@@@@@@@");
-    console.log(array.toJS())
+    console.log("测试array");
+    console.log(array)
+    // console.log(array.toJS())
     let result = [];
     for(let i = 0; i< array.size; i++){
       console.log("$$$$$$$$$$")
       console.log(array.getIn([i,'type']))
       result.push( 
         // 
-        <Row onClick={this.inFloder.bind(this,array.getIn([i,'id']))} key = { array.getIn([i,'id']) } className="file-sub">
-          <Col className="file-item" span={3}>
+        <Row  key = { array.getIn([i,'id']) } className="file-sub">
+          <Col onClick={this.inFloder.bind(this,array.getIn([i,'id']))} className="file-item" span={6}>
               {
                 this.getIcon(array.getIn([i,'name']),array.getIn([i,'type']))
               }
-              <div className="file-text">{array.getIn([i,'name'])}</div>
+              <p>{array.getIn([i,'name'])}</p>
           </Col>
 
-          <Col span={3}></Col>
-          <Col span={3}></Col>
           <Col span={3}> 
-            <Icon style={{lineHeight:'2.2rem',display:array.getIn([i,'type']) == "文件夹" ? 'none':''}} type="eye" onClick={this.view.bind(this,array.getIn([i,'src']))} />
+            <Icon style={{lineHeight:'2.2rem',
+            display:(array.getIn([i,'type']) !== "文件夹" && this.getEye(array.getIn([i,'name']))) ? '':'none'
+            }} type="eye" onClick={
+              this.getClick.call(this,array.getIn([i]),array.getIn([i,'name']))
+              // this.view.bind(this,array.getIn([i,'pdfSrc']))
+              } />
           </Col>
           <Col span={3}>
-            <Icon style={{lineHeight:'2.2rem',display:array.getIn([i,'type']) == "文件夹" ? 'none':''}} onClick={this.download.bind(this,array.getIn([i,'src']),array.getIn([i,'name']))} type="arrow-down" /> 
+            <Icon style={{lineHeight:'2.2rem',
+            
+            display:array.getIn([i,'type']) !== "文件夹"  ? '':'none'
+            
+            }} onClick={this.download.bind(this,array.getIn([i,'src']),array.getIn([i,'name']))} type="arrow-down" /> 
           </Col>
           <Col className="file-item" span={3}>
             {array.getIn([i,'creator'])}
           </Col>
-          {/* {this.getView(array.getIn([i,'type']))} */}
-          <Col className="file-item" span={3}>{ array.getIn([i,'date']).slice(0,10)+' '+array.getIn([i,'date']).slice(11,19) }</Col>
-          <Col span={3}> </Col>
+          <Col className="file-item" span={3}>
+            {this.getDelete(array.getIn([i,'creatorId']),array.getIn([i,'id']),array.getIn([i,'type']))}
+          </Col>
+          <Col className="file-item" span={6}>{ array.getIn([i,'date']).slice(0,10)+' '+array.getIn([i,'date']).slice(11,19) }</Col>
+
         </Row>
       )
     }
@@ -311,19 +457,24 @@ class File_2 extends Component{
     onOk() {
       console.log("执行xxxxxxxxxxxxxxxxxx")
       console.log(idStack[idStack.length-1][0])
-      axios.post(localStorage.api+'files/newFolder',qs.stringify({
-        item: that.props.fileId,
-        fatherId:idStack[idStack.length-1][0],
-        folderName:document.getElementById('floder').value
-      }),{withCredentials:true})
-      .then((response) => {
-        that.getFile()
-        console.log(response)
-      })
-      .catch((err) => {
+      if(document.getElementById('floder').value == ""){
+        alert("文件夹名不能为空!")
+      }else{
+        axios.post(localStorage.api+'files/newFolder',qs.stringify({
+          item: that.props.fileId,
+          fatherId:idStack[idStack.length-1][0],
+          folderName:document.getElementById('floder').value
+        }),{withCredentials:true})
+        .then((response) => {
+          that.getFile()
+          console.log(response)
+        })
+        .catch((err) => {
+  
+          console.log(err)
+        })
+      }
 
-        console.log(err)
-      })
     },
     onCancel() {},
   });
@@ -338,7 +489,7 @@ class File_2 extends Component{
   for(let i = 1; i < idStack.length; i++ ){
     for(let j = 0; j < nowFile.size; j++){
       if(idStack[i][0] == nowFile.getIn([j,"id"])){
-        nowFile = nowFile.getIn([j,"file"]);
+        nowFile = nowFile.getIn([j,"files"]);
         if(id == idStack[i][0]){
           break bott;
         }
@@ -347,9 +498,9 @@ class File_2 extends Component{
   }
 }else{
 }
-  console.log(nowFile.toJS())
+  // console.log(nowFile.toJS())
   
-  this.props.handleSetShowFile(nowFile);
+  this.props.handleSetShowFile(fromJS(nowFile));
   for(let k = 0; k < idStack.length; k++){
     if(idStack[k][0] == id){
       idStack.length = k+1;
@@ -391,12 +542,28 @@ class File_2 extends Component{
       // },
       onChange(info) {
         if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
+          console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+          console.log(info.file)
+          console.log(info.fileList);
         }
         if (info.file.status === 'done') {
-          console.log("完成")
-          message.success(`${info.file.name} file uploaded successfully`);
-          that.getFile()
+
+
+          if(info.file.response.key != 1){
+            if(info.file.response.mes == '文件名重复'){
+              message.error(`${info.file.name} 文件名重复.`);
+            }else if(info.file.response.mes=='文件过大,文件大小不得超过10mb'){
+              message.error(`${info.file.name} 文件过大,文件大小不得超过10mb.`);
+            }else{
+              message.error(`${info.file.name} 上传失败.`);
+            }
+          }else{
+            console.log("完成")
+            message.success(`${info.file.name} file uploaded successfully`);
+            that.getFile()
+          }
+
+
         } else if (info.file.status === 'error') {
           console.log("失败")
           message.error(`${info.file.name} file upload failed.`);
@@ -423,14 +590,13 @@ class File_2 extends Component{
 
       <div className="file-name web-font">
         <Row style={{marginLeft:'1rem'}}>
-            <Col span={3}>名称</Col>
-            <Col span={3}></Col>
-            <Col span={3}></Col>
+            <Col span={6}>名称</Col>
             <Col span={3}>预览</Col>
             <Col span={3}>下载</Col>
             <Col span={3}>创建者</Col>
-            <Col span={3}>更新日期</Col>
-            <Col span={3}></Col>
+            <Col span={3}>编辑</Col>
+            <Col span={6}>更新日期</Col>
+            
         </Row>
       </div>
       <div className="file-content">
@@ -447,7 +613,8 @@ class File_2 extends Component{
 const mapStateToProps = (state) => {
   return ({
     file:state.getIn(['file']),
-    showFile:state.getIn(['showFile'])
+    showFile:state.getIn(['showFile']),
+    personal:state.getIn(['personal'])
   })
 }
 
@@ -464,4 +631,4 @@ const mapDispatchToProps = (dispatch) => {
   })
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(File_2)
+export default connect(mapStateToProps,mapDispatchToProps)(File)

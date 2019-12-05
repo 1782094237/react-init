@@ -131,6 +131,11 @@ Array.prototype.contains = function (obj) {
 const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
+
+    componentWillUnmount(){
+      editor_1 = false;
+    }
+
     getEditor(){
 
       if(editor_1){
@@ -267,6 +272,7 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
                 })(
                   <Select
                     // onChange={this.handleSelectChange}
+                    disabled={ personal.identity.contains("组长") || personal.identity.contains("需求负责人") || (personal.id == data.worker) ? false : true}
                   >
                     <Option value="未开始">未开始</Option>
                     <Option value="进行中">进行中</Option>
@@ -291,6 +297,11 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
   // eslint-disable-next-line
   class extends React.Component {
+
+    componentWillUnmount(){
+      editor = false;
+    }
+
     getEditor(){
       if(editor){
 
@@ -625,7 +636,7 @@ class Task_3 extends Component{
     .then((resolve) => {
       console.log("数据输出***************************")
       // console.log(resolve.data.bigTasks[0].smallTasks)
-      resolve.data.bigTasks[1].smallTasks.reverse();
+      // resolve.data.bigTasks[1].smallTasks.reverse();
       // let data = resolve.data.bigTasks.samllTasks;
       this.props.handleSetTaskData(fromJS(resolve.data));
       console.log("**************************")

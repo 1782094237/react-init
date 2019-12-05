@@ -18,6 +18,7 @@ const defaultState = fromJS({
   newNotice:false,
   personal:{},
   teamInfo:{},
+  secondLogin:0
 })
 
 export default (state = defaultState, action) => {
@@ -66,6 +67,9 @@ export default (state = defaultState, action) => {
 
     case actionTypes.TEAMINFO:
         return state.set("teamInfo",action.value)
+
+    case actionTypes.SECONDLOGIN:
+        return state.set("secondLogin",action.value)
 
   }
   return state;

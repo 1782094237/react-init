@@ -10,8 +10,10 @@ import './style.css';
 import IfLogin from './iflogin';
 import Lay from './layout'
 
-require('./static/icons/iconfont.js')
 
+require('./static/icons/iconfont.js')
+// http://27y6v05022.wicp.vip:40292/
+// http://121.40.217.108:8080/
 localStorage.api = "http://121.40.217.108:8080/";
 console.log(localStorage.api)
 class App extends Component {
@@ -21,15 +23,7 @@ class App extends Component {
       <Fragment>
         <Provider store = { store }>
           <IfLogin />
-          {/* <Lay /> */}
-          {/* <BrowserRouter>
-              <Fragment>
-                <Route path = '/' exact component={Home}></Route>
-                <Route path = '/detail' exact component={Detail}></Route>
-                <Route path = '/' exact render={() => <div>home</div>}></Route>
-                <Route path = '/detail' exact render={() => <div>detail</div>}></Route>
-              </Fragment>
-          </BrowserRouter> */}
+          {/* <Main></Main> */}
         </Provider>
       </Fragment>
     );

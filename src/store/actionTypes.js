@@ -36,3 +36,4 @@ export const PERSONAL = 'login/personal'
 export const TEAMINFO = 'login/teaminfo'
 //保存小组信息
 
+export const SECONDLOGIN = 'login/second/login'

@@ -239,7 +239,7 @@ class TeamInfo extends Component{
         this.props.notice.groupNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp; {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )
@@ -263,7 +263,7 @@ class TeamInfo extends Component{
         this.props.notice.teacherNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )
@@ -282,7 +282,7 @@ class TeamInfo extends Component{
         this.props.notice.myNotice.map((value,index) => {
           result.push(
                 <Timeline.Item className="notice-top">
-                  <p>{value.creatorName} &nbsp;&nbsp;  {value.time.slice(0,10)} {value.time.slice(11,19)} </p>
+                  <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
           )

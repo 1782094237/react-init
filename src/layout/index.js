@@ -167,12 +167,22 @@ componentDidMount(){
       })
 }
 
+lgout(){
+  axios.get(localStorage.api+"logout",{withCredentials:true})
+    .then((resolve) => {
+      this.props.handleSetLogin(0)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
 
   render() {
 
 
     const menu = (
-      <Menu >
+      <Menu onClick={this.lgout.bind(this)}>
         <Menu.Item key="1">
           <Icon type="user" />
           退出登录
@@ -292,7 +302,8 @@ const mapStateToProps = (state) => {
     itemNumber:state.getIn(['itemNumber']),
     personal:state.getIn(['personal']),
     teamInfo:state.getIn(['teamInfo']),
-    taskData:state.getIn(['taskData'])
+    taskData:state.getIn(['taskData']),
+    login:state.getIn(['login'])
   })
 }
 
@@ -305,6 +316,10 @@ const mapDispatchToProps = (dispatch) => {
       },
     handleSetTaskData(value){
       const action = actionCreator.setTaskData(value);
+      dispatch(action);
+    },
+    handleSetLogin(value){
+      const action = actionCreator.setLogin(value);
       dispatch(action);
     }
   })

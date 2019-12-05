@@ -78,4 +78,11 @@ export const setTeamInfo = (key) => ({
   value:key
 })
 
+export const setSecondLogin = (key) => ({
+  type:actionTypes.SECONDLOGIN,
+  value:key
+})
+
+
+
 

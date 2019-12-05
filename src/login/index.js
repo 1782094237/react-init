@@ -22,7 +22,6 @@ class LoginForm extends Component{
 //登陸
   getLogin(err,values,mail){
     const that = this;
-    console.log('Received values of form: ', values);
 //后端 登录接口
       let postData;
       if(mail){
@@ -40,11 +39,34 @@ class LoginForm extends Component{
       axios.post(localStorage.api+'login',qs.stringify(postData),{withCredentials:true})
       .then(function(response){
         if(response.data.key == 0 && response.data.errorInfo == "请输入邮箱以激活账号"){
-          console.log(response)
           //激活
+          const { getFieldDecorator } = this.props.form;
                     confirm({
                       title: '请输入邮箱以激活账号',
-                      content: <div><br/><Input id="mail" placeholder="Basic usage" /></div>,
+                      content: 
+                      <Form>
+                         <Form.Item>
+                          {getFieldDecorator('email', {
+                            rules: [
+                              {
+                                type: 'email',
+                                message: 'The input is not valid E-mail!',
+                              },
+                              {
+                                required: true,
+                                message: 'Please input your E-mail!',
+                              },
+                            ],
+                          })(
+                            <Input
+                              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              placeholder="Email"
+                              id="mail"
+                            />,
+                          )}
+                        </Form.Item>
+                      </Form>                      
+                      ,
                       onOk() {
                         that.getLogin.call(that,err,values,document.getElementById("mail").value)
                       },
@@ -62,34 +84,36 @@ class LoginForm extends Component{
         }else{
           //登陆成功
           console.log("登錄成功")
-          console.log(response.data)
+          console.log("333333333333333333333")
           that.props.handleSetLogin(1);
 
-          axios.get(localStorage.api+'team/info',{withCredentials:true})
-          .then((resolve) => {
-            console.log("数据输出5555555555555555555555")
-            console.log(resolve.data)
-            console.log("执行到这里")
-            that.props.handleSetTeamInfo(resolve.data.teamInfo)
-            let result = {};
-            for(let i = 0 ; i < resolve.data.studentsInfo.length; i++){
-              if(response.data.id == resolve.data.studentsInfo[i].userId){
-                result = {
-                  id:response.data.id,
-                  name:response.data.userName,
-                  class:response.data.userClass,
-                  identity:resolve.data.studentsInfo[i].identity.split(',')
-                }
-                console.log("&&&&&&&&&&%%%获取个人信息")
-                console.log(result)
-                that.props.handleSetPersonal(result);
-                break;
-              }
-            }
+
+          // axios.get(localStorage.api+'team/info',{withCredentials:true})
+          // .then((resolve) => {
+          //   console.log("获取信息成功33333333333333333333333")
+          //   that.props.handleSetTeamInfo(resolve.data.teamInfo)
+          //   let result = {};
+          //   for(let i = 0 ; i < resolve.data.studentsInfo.length; i++){
+          //     console.log("123"+response.data.userMap.id)
+          //     if(response.data.userMap.id == resolve.data.studentsInfo[i].userId){
+
+
+          //       result = {
+          //         id:response.data.userMap.id,
+          //         name:response.data.userMap.userName,
+          //         class:response.data.userMap.userClass,
+          //         identity:resolve.data.studentsInfo[i].identity.split(',')
+          //       }
+          //       that.props.handleSetPersonal(result);
+          //       break;
+          //     }
+          //   }
       
-          })
-          .catch((error) => {
-          })
+          // })
+          // .catch((error) => {
+          //   console.log("获取信息失敗3333333333333333333")
+          //   console.log(error)
+          // })
         }
       })
       .catch(function(err){
@@ -121,32 +145,28 @@ class LoginForm extends Component{
           <div className="login-title">软件工程</div>
           <Form.Item>
             {getFieldDecorator('username', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+              rules: [{ required: true, message: '请输入学号!' }],
             })(
               <Input
                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="Username"
+                placeholder="学 号"
               />,
             )}
           </Form.Item>
           <Form.Item>
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+              rules: [{ required: true, message: '请输入密码!' }],
             })(
               <Input
                 prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 type="password"
-                placeholder="Password"
+                placeholder="首次登陆密码默认为学号"
               />,
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(<Checkbox className="login-rember">Remember me</Checkbox>)}
             <Button type="primary" htmlType="submit" className="login-form-button">
-              Log in
+              登 录
             </Button>
           </Form.Item>
         </Form>
@@ -176,7 +196,6 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(action);
     },
     handleSetTeamInfo(key){
-      console.log("执行了")
         const action = actionCreator.setTeamInfo(key);
         dispatch(action);
     }

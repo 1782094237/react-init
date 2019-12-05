@@ -1,13 +1,15 @@
-import React, { Fragment, Component } from 'react'
+import React, { Fragment, Component,PureComponent } from 'react'
 import { connect } from "react-redux"
 
 import { actionCreator } from './store'
+
+import axios from 'axios'
 
 import Lay from './layout'
 import Login from './login'
 
 
-class IfLogin extends Component {
+class IfLogin extends PureComponent {
 
   getCookie(name){
     console.log(document.cookie)
@@ -27,17 +29,58 @@ class IfLogin extends Component {
   }
 
   ifLogin(){
+    const that = this;
     if(this.props.login == 1){
-      return <Lay></Lay>
+
+      axios.get(localStorage.api+'userMes',{withCredentials:true})
+        .then(
+          (response) => {
+          console.log("是否循环")
+          axios.get(localStorage.api+'team/info',{withCredentials:true})
+          .then((resolve) => {
+            console.log("获取信息成功33333333333333333333333")
+            that.props.handleSetTeamInfo(resolve.data.teamInfo)
+            let result = {};
+            console.log("123"+response.data.id)
+            for(let i = 0 ; i < resolve.data.studentsInfo.length; i++){
+              if(response.data.id == resolve.data.studentsInfo[i].userId){
+                
+                result = {
+                  id:response.data.id,
+                  name:response.data.userName,
+                  class:response.data.userClass,
+                  identity:resolve.data.studentsInfo[i].identity.split(',')
+                }
+                that.props.handleSetPersonal(result);    
+                this.props.handleSetSecondLogin(true)
+              }
+            }
+          })
+        }) 
+        .catch((error) => {
+          console.log("获取信息失敗3333333333333333333")
+          console.log(error)
+        })
+        // return <Lay></Lay>
     }else{
+      this.props.handleSetSecondLogin(false);
+      // return <Login></Login>
+    }
+  }
+
+  getLogin(){
+    console.log(this.ifLogin()+"88888")
+    if(this.props.secondLogin == false){
       return <Login></Login>
+    }else{
+      return <Lay></Lay>
     }
   }
   render(){
     this.getCookie('SOFTID')
     return(
       <Fragment>
-          {this.ifLogin()}
+          {this.getLogin()}
       </Fragment>
     );
   }
@@ -46,7 +89,8 @@ class IfLogin extends Component {
 
 const mapStateToProps = (state) => {
   return ({
-    login:state.getIn(['login'])
+    login:state.getIn(['login']),
+    secondLogin:state.getIn(['secondLogin'])
   })
 }
 
@@ -56,6 +100,18 @@ const mapDispatchToProps = (dispatch) => {
           const action = actionCreator.setLogin(key);
           dispatch(action);
       },
+    handleSetPersonal(key){
+        const action = actionCreator.setPersonal(key);
+        dispatch(action);
+    },
+    handleSetTeamInfo(key){
+        const action = actionCreator.setTeamInfo(key);
+        dispatch(action);
+    },
+    handleSetSecondLogin(key){
+      const action = actionCreator.setSecondLogin(key);
+      dispatch(action);
+    }
   })
 }
 
