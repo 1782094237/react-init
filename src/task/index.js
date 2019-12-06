@@ -250,7 +250,7 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
               <Col style={{paddingLeft:'10%'}} span={8}>
               <Form.Item label="负责人">
                 {getFieldDecorator('gender', {
-                  rules: [{ required: true, message: 'Please select your gender!' }],
+                  rules: [{ required: true, message: '请选择负责人' }],
                   initialValue:data.worker
                 })(
                   <Select
@@ -269,7 +269,7 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
                 )}
               </Form.Item>
               <Form.Item label="日期">
-                {getFieldDecorator('date-picker', {rules: [{  required: true, message: 'Please select time!' }],
+                {getFieldDecorator('date-picker', {rules: [{  required: true, message: '请选择日期!' }],
                 initialValue:moment(getEndTimeNumber(data.endTime))
               })(
                   <DatePicker disabled />
@@ -278,7 +278,7 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
 
               <Form.Item label="任务状态">
                 {getFieldDecorator('station', {
-                  rules: [{ required: true, message: 'Please select your station!' }],
+                  rules: [{ required: true, message: '请选择状态' }],
                   initialValue:data.status
                 })(
                   <Select
@@ -394,7 +394,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   rules: [{ required: true, message: 'Please select your gender!' }],
                 })(
                   <Select
-                    placeholder="Select a option and change input text above"
+                    placeholder="请选择负责人"
                     // onChange={this.handleSelectChange}
                   >
                     {option}
@@ -402,10 +402,11 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 )}
               </Form.Item>
               <Form.Item label="日期">
-                {getFieldDecorator('date-picker', {rules: [{  required: true, message: 'Please select time!' }]})(
+                {getFieldDecorator('date-picker', {rules: [{  required: true }]})(
                 <DatePicker
                   format="YYYY-MM-DD"
                   disabledDate={this.disabledDate.bind(this)}
+                  placeholder="请选择日期" 
                 />
                 )}
               </Form.Item>

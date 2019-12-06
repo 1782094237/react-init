@@ -8,16 +8,19 @@ import './style.css';
 
 import { actionCreator } from '../store';
 
-import {  Button,  Icon, Row, Col, Upload, message, Modal, Input,Popconfirm } from 'antd';
+
+
+import {  Button, Icon, Row, Col, Upload, message, Modal, Input,Popconfirm } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
+const FileSaver = require('file-saver');
 moment.locale('zh-cn');
 const { confirm } = Modal;
 
-
+var download2 = require('../static/download2.js')
 let nowFileId = 0;
 let idStack = [['0',"所有文件"]];
 Array.prototype.contains = function (obj) {
@@ -140,32 +143,90 @@ class File extends Component{
   //     }
   //     // 将lob对象转换为域名结合式的url
   //     let blobUrl = window.URL.createObjectURL(res.data)
-  //     let link = document.createElement('a')
-  //     document.body.appendChild(link)
-  //     link.style.display = 'none'
-  //     link.href = blobUrl
-  //     // 设置a标签的下载属性，设置文件名及格式，后缀名最好让后端在数据格式中返回
-  //     link.download = name
-  //     // 自触发click事件
-  //     link.click()
-  //     document.body.removeChild(link)
-  //     window.URL.revokeObjectURL(blobUrl);
+  //     download2(blobUrl);
   // })
 
-  fetch(src).then(res => res.blob()).then(blob => {
-    const a = document.createElement('a');
-    document.body.appendChild(a)
-    a.style.display = 'none'
-    // 使用获取到的blob对象创建的url
-    const url = window.URL.createObjectURL(blob);
-    a.href = url;
-    // 指定下载的文件名
-    a.download = name;
-    a.click();
-    document.body.removeChild(a)
-    // 移除blob对象的url
-    window.URL.revokeObjectURL(url);
-  });
+  
+      axios({
+        method: 'GET',
+        url: src,
+        responseType: 'blob'
+    }).then(res=>{
+        download2(res.data,name);
+        // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
+        // let url = window.URL.createObjectURL(blob);
+        // window.location.href = url;
+    }).catch(err=>{
+        message.error("下载文件失败！")
+    })
+
+
+
+
+  // fetch(src).then(res => res.blob()).then(blob => {
+  //   const a = document.createElement('a');
+  //   document.body.appendChild(a)
+  //   a.style.display = 'none'
+  //   // 使用获取到的blob对象创建的url
+  //   const url = window.URL.createObjectURL(blob);
+  //   a.href = url;
+  //   // 指定下载的文件名
+  //   a.download = name;
+  //   a.click();
+  //   document.body.removeChild(a)
+  //   // 移除blob对象的url
+  //   window.URL.revokeObjectURL(url);
+  // });
+
+  // FileSaver.saveAs(src, name);
+
+
+//   axios({
+//     method: 'post',
+//     url:src,
+//     // 必须显式指明响应类型是一个Blob对象，这样生成二进制的数据，才能通过window.URL.createObjectURL进行创建成功
+//     responseType: 'blob',
+// }).then((res) => {
+//     if (!res) {
+//         return
+//     }
+//     console.log(res.data)
+//     FileSaver.saveAs(res.data, name);
+// })
+
+// download2(src,name,'text/plain')
+
+// axios({
+//   method: 'get',
+//   headers: { 'content-type': 'application/x-www-form-urlencoded' },
+//   responseType: 'arraybuffer',
+//   url:src,
+//   responseType: 'blob',
+// }).then((res) => {
+//     // 创建隐藏的可下载链接
+//     var eleLink = document.createElement('a');
+//     eleLink.download = name;
+//     eleLink.style.display = 'none';
+//     // 字符内容转变成blob地址
+//     eleLink.href = URL.createObjectURL(res.data);
+//     // 触发点击
+//     document.body.appendChild(eleLink);
+//     eleLink.click();
+//     // 然后移除
+//     document.body.removeChild(eleLink);
+//   })
+// download2(src)
+
+
+    // axios.get(src,{withCredentials:true})
+    //   .then((response) => {
+    //     console.log(response)
+    //     // FileSaver.saveAs(response.data, name)
+    //     download2(response.data)
+        
+    //   })
+
+
 
 
   }
@@ -346,6 +407,9 @@ class File extends Component{
   getDelete(creatorId,fileId,type){
     // console.log("删除id"+creatorId)
     if(this.props.personal.identity.contains("组长") || creatorId == this.props.personal.id){
+      console.log(type)
+      console.log(creatorId)
+      console.log(this.props.personal.id)
 
       if(type == "文件夹"){
         return (  

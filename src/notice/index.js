@@ -76,7 +76,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   rules: [{ required: true, message: 'Please select your gender!' }],
                 })(
                   <Select
-                    placeholder="Select a option and change input text above"
+                    placeholder="请选择负责人"
                     // onChange={this.handleSelectChange}
                   >
                     {option}
@@ -137,7 +137,7 @@ class Notice extends Component{
       .then(function(response){
         // console.log("成功")
         // console.log(response.data)
-        message.successs('新建通知成功！')
+        message.success('新建通知成功！')
         
       axios.get(localStorage.api+'team/myNotice',{withCredentials:true})
       .then((resolve) => {
@@ -155,6 +155,7 @@ class Notice extends Component{
       })
       })
       .catch(function(err){
+        console.log(err)
         message.error('新建通知失败！')
       })
 

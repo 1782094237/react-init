@@ -61,7 +61,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                 })(
                   <Select
                     mode="multiple"
-                    placeholder="Select a option and change input text above"
+                    placeholder="请选择负责人"
                     // onChange={this.handleSelectChange}
                   >
                     <Option value="需求负责人">需求负责人</Option>
