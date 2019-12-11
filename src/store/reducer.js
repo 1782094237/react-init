@@ -18,7 +18,16 @@ const defaultState = fromJS({
   newNotice:false,
   personal:{},
   teamInfo:{},
-  secondLogin:0
+  secondLogin:0,
+  loginValue:{},
+  loginVisible:false,
+  teacherItem:0,
+  teacherGroup:{},
+  teacherNotice:false,
+  teacherNewNotice:false,
+  loginRole:"学生",
+  teacherId:{},
+  teacherToStudent:false
 })
 
 export default (state = defaultState, action) => {
@@ -70,6 +79,33 @@ export default (state = defaultState, action) => {
 
     case actionTypes.SECONDLOGIN:
         return state.set("secondLogin",action.value)
+
+    case actionTypes.LOGINVALUE:
+        return state.set("loginValue",action.value)
+  
+    case actionTypes.LOGINVISIBLE:
+        return state.set("loginVisible",action.value)
+
+    case actionTypes.TEACHERITEM:
+        return state.set("teacherItem",action.value)
+
+    case actionTypes.TEACHERGROUP:
+        return state.set("teacherGroup",action.value)
+
+    case actionTypes.TEACHERNOTICE:
+        return state.set("teacherNotice",action.value)
+
+    case actionTypes.TEACHERNEWNOTICE:
+        return state.set("teacherNewNotice",action.value)
+
+    case actionTypes.LOGINROLE:
+        return state.set("loginRole",action.value)
+
+    case actionTypes.TEACHERID:
+        return state.set("teacherId",action.value)
+
+    case actionTypes.TEACHERTOSTUDENT:
+        return state.set("teacherToStudent",action.value)
 
   }
   return state;

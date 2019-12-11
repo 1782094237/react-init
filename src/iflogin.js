@@ -7,6 +7,7 @@ import axios from 'axios'
 
 import Lay from './layout'
 import Login from './login'
+import Teacher from './teacher'
 
 import { message } from 'antd';
 
@@ -38,6 +39,8 @@ class IfLogin extends Component {
         .then(
           (response) => {
           // console.log("是否循环")
+
+          if(response.data.role == "学生"){
           axios.get(localStorage.api+'team/info',{withCredentials:true})
           .then((resolve) => {
             // console.log("获取信息成功33333333333333333333333")
@@ -51,13 +54,31 @@ class IfLogin extends Component {
                   id:response.data.id,
                   name:response.data.userName,
                   class:response.data.userClass,
-                  identity:resolve.data.studentsInfo[i].identity.split(',')
+                  identity:resolve.data.studentsInfo[i].identity.split(','),
+                  role:'学生'
                 }
+                that.props.handleSetLoginRole("学生")
                 that.props.handleSetPersonal(result);    
-                this.props.handleSetSecondLogin(true)
+                that.props.handleSetSecondLogin(true)
               }
             }
           })
+        }else{
+          let result = {}
+          result = {
+            id:response.data.id,
+            name:response.data.userName,
+            class:response.data.userClass,
+            identity:[],
+            role:'老师'
+          }
+          that.props.handleSetLoginRole("老师")
+          that.props.handleSetPersonal(result);    
+          that.props.handleSetSecondLogin(true)
+        }
+
+
+
         }) 
         .catch((error) => {
           message.error('获取用户信息失败！')
@@ -76,7 +97,15 @@ class IfLogin extends Component {
     if(this.props.secondLogin == false){
       return <Login></Login>
     }else{
-      return <Lay></Lay>
+      // return <Lay></Lay>
+      if(this.props.loginRole == '老师'){
+
+        return <Teacher></Teacher>
+      }else{
+        return <Lay></Lay>
+      }
+      
+      
     }
   }
   render(){
@@ -93,12 +122,18 @@ class IfLogin extends Component {
 const mapStateToProps = (state) => {
   return ({
     login:state.getIn(['login']),
-    secondLogin:state.getIn(['secondLogin'])
+    secondLogin:state.getIn(['secondLogin']),
+    loginRole:state.getIn(['loginRole'])
+    // personal:state.getIn(['personal']),
   })
 }
 
 const mapDispatchToProps = (dispatch) => {
   return ({
+    handleSetLoginRole(key){
+      const action = actionCreator.setLoginRole(key);
+      dispatch(action);
+      },
     handleSetLogin(key){
           const action = actionCreator.setLogin(key);
           dispatch(action);
@@ -113,6 +148,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     handleSetSecondLogin(key){
       const action = actionCreator.setSecondLogin(key);
+      dispatch(action);
+    },
+    handleSetTeacherId(key){
+      const action = actionCreator.setTeacherId(key);
       dispatch(action);
     }
   })

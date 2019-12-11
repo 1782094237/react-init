@@ -2,7 +2,7 @@ import React,{ Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import axios from 'axios';
 import qs from 'qs';
-import {fromJS, toJS, getIn} from 'immutable';
+import {fromJS} from 'immutable';
 
 import './style.css';
 
@@ -10,7 +10,7 @@ import { actionCreator } from '../store';
 
 
 
-import {  Button, Icon, Row, Col, Upload, message, Modal, Input,Popconfirm } from 'antd';
+import {  Icon, Row, Col,  message, Modal, Input, Popconfirm } from 'antd';
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -31,7 +31,7 @@ Array.prototype.contains = function (obj) {
   }
   return false;
 }
-class File_4 extends Component{
+class File_5 extends Component{
 
   constructor(props){
     super(props)
@@ -58,9 +58,7 @@ class File_4 extends Component{
     // console.log("先执行")
     if(nowFileId == this.props.fileId){
       const that = this;
-      axios.post(localStorage.api+'files/allFiles',qs.stringify({
-        item: that.props.fileId,
-      }),{withCredentials:true})
+      axios.get(localStorage.api+'teacher/allNode',{withCredentials:true})
         .then(function(response){
           // console.log("获取文件成功77777")
           // console.log(response.data)
@@ -77,9 +75,7 @@ class File_4 extends Component{
       idStack=[[0,"所有文件"]];
       this.getStack();
       const that = this;
-      axios.post(localStorage.api+'files/allFiles',qs.stringify({
-        item: that.props.fileId,
-      }),{withCredentials:true})
+      axios.get(localStorage.api+'teacher/allNode',{withCredentials:true})
         .then(function(response){
           // console.log("获取文件成功7777")
           // console.log(response.data)
@@ -439,8 +435,7 @@ class File_4 extends Component{
   }
 
   deleteFile(fileId,type,e){
-    const that = this;
-
+      const that = this;
       axios.post(localStorage.api+'files/deleteFile',qs.stringify({
         fileId:fileId
       }),{withCredentials:true}
@@ -479,8 +474,7 @@ class File_4 extends Component{
     for(let i = 0; i< array.size; i++){
       // console.log("$$$$$$$$$$")
       // console.log(array.getIn([i,'type']))
-      result.push( 
-        // 
+      result.push(  
         <Row  key = { array.getIn([i,'id']) } className="file-sub">
           <Col onClick={this.inFloder.bind(this,array.getIn([i,'id']))} className="file-item" span={6}>
               {
@@ -504,12 +498,12 @@ class File_4 extends Component{
             
             }} onClick={this.download.bind(this,array.getIn([i,'src']),array.getIn([i,'name']))} type="arrow-down" /> 
           </Col>
-          <Col className="file-item" span={3}>
+          {/* <Col className="file-item" span={3}>
             {array.getIn([i,'creator'])}
           </Col>
           <Col className="file-item" span={3}>
             {this.getDelete(array.getIn([i,'creatorId']),array.getIn([i,'id']),array.getIn([i,'type']))}
-          </Col>
+          </Col> */}
           <Col className="file-item" span={6}>{ array.getIn([i,'date']).slice(0,10)+' '+array.getIn([i,'date']).slice(11,19) }</Col>
 
         </Row>
@@ -668,18 +662,6 @@ class File_4 extends Component{
     return(
       
       <Fragment>
-      <div className="file-button">
-        <Row>
-
-          <Col span="12"><Button onClick={this.newFloder.bind(this)}  className="up-file">新建文件夹</Button></Col>
-          <Col span="12">
-            <Upload  {...props} fileList={this.state.fileList}>
-              <Button style={{display:'inline'}} className="up-file" type="primary">上传文件</Button>
-            </Upload>
-          </Col>
-        </Row>
-      </div>
-
       <div style={{overflow:'hidden',width:'100%'}}>
       <div className="file-stack">{this.getStack()}</div>
 
@@ -688,8 +670,8 @@ class File_4 extends Component{
             <Col span={6}>名称</Col>
             <Col span={3}>预览</Col>
             <Col span={3}>下载</Col>
-            <Col span={3}>创建者</Col>
-            <Col span={3}>编辑</Col>
+            {/* <Col span={3}>创建者</Col>
+            <Col span={3}>编辑</Col> */}
             <Col span={6}>更新日期</Col>
             
         </Row>
@@ -726,4 +708,4 @@ const mapDispatchToProps = (dispatch) => {
   })
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(File_4)
+export default connect(mapStateToProps,mapDispatchToProps)(File_5)

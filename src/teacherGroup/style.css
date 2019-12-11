@@ -1,0 +1,60 @@
+.teacher-box{
+  border: 1px solid #dadfe6;
+  border-radius: 0.125rem;
+  padding:1rem;
+  text-align: left !important;
+  font-size: 1rem;
+  font-weight: 700;
+  min-height:30vh;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.teacher-table{
+  margin-top:1rem;
+  font-weight: 500;
+}
+
+.teacher-list{
+  margin-top:1rem;
+}
+
+.teacher-panel-table{
+  font-weight: 500;
+}
+
+.teacher-button{
+  float:right;
+  overflow: hidden;
+  width:20rem;
+}
+
+
+.teacher-up-file{
+  margin-right: 1rem;
+  cursor: pointer;
+  padding: 0 1.3rem !important;
+  border: 1px solid #202d40 !important;
+  background-color: #202d40 !important;
+}
+
+.teacher-up-file span{
+  color: white !important;
+}
+
+.teacher-up-file:hover{
+  opacity: 0.8;
+}
+
+.teacher-row{
+  margin-top:5rem;
+  display:flex;
+  justify-content: center;
+  align-content: center;
+  border-bottom: 1px solid #202d40 !important;
+}
+
+.teacher-col{
+  padding:0 1rem 0 1rem;
+  margin:auto;
+}

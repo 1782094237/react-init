@@ -225,8 +225,9 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
         <Modal
           visible={visible}
           width='60%'
-          title="任务详情"
+          title="任务创建需求（注：请任务负责人在任务完成后将相关文档以任务名_人名_时间的命名方式上传到文件管理）"
           okText="确认修改"
+          cancelText="取消"
           onCancel={onCancel}
           onOk={onOk}
         >
@@ -368,8 +369,9 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         <Modal
           visible={visible}
           width='60%'
-          title="创建需求"
-          okText="Create"
+          title="创建需求（注：请任务负责人在任务完成后将相关文档以任务名_人名_时间的命名方式上传到文件管理）"
+          okText="创建"
+          cancelText="取消"
           onCancel={onCancel}
           onOk={onOk}
         >
@@ -461,10 +463,6 @@ class Task extends Component{
     // .catch(function(err){
     //   console.log(err)
     // })
-
-
-
-
   }
 
 
@@ -627,42 +625,40 @@ class Task extends Component{
         message.error('请勿重复提交！')
       }else{
       
-      axios.post(localStorage.api+'team/bigStatus',qs.stringify({
-        taskId:1,
-        status:'已完成'
-      }),{withCredentials:true}
-      )
-      .then(function(response){
-        message.success('提交成功！')
-        // console.log("成功")
-        // console.log(response.data)
-        // console.log("执行到这里+++++++++++++++++++++++")
-        // console.log(that.props.taskData.toJS())
-      })
-      .catch(function(err){
-        message.error('提交失败！')
-        // console.log("失败")
-        // console.log(err)
-      })
-
-      axios.post(localStorage.api+'team/bigStatus',qs.stringify({
-        taskId:2,
-        status:'进行中'
-      }),{withCredentials:true}
-      )
-      .then(function(response){
-        // console.log("成功")
-        // console.log(response.data)
-        // console.log("执行到这里+++++++++++++++++++++++")
-              //获取所有任务，刷新任务
-              that.resetTask();
-
-      })
-      .catch(function(err){
-        // console.log("失败")
-        // console.log(err)
-        message.error('下一状态改变失败！')
-      })
+        axios.post(localStorage.api+'team/bigStatus',qs.stringify({
+          taskId:this.props.taskData.getIn(['bigTasks',0,'id']),
+          status:'已完成'
+        }),{withCredentials:true}
+        )
+        .then(function(response){
+          message.success('提交成功！')
+          // console.log("成功")
+          // console.log(response.data)
+        })
+        .catch(function(err){
+          message.error('提交失败！')
+          // console.log("失败")
+          // console.log(err)
+        })
+  
+        axios.post(localStorage.api+'team/bigStatus',qs.stringify({
+          taskId:this.props.taskData.getIn(['bigTasks',1,'id']),
+          status:'进行中'
+        }),{withCredentials:true}
+        )
+        .then(function(response){
+  
+          // console.log("成功")
+          // console.log(response.data)
+          // console.log("执行到这里+++++++++++++++++++++++")
+          that.resetTask();
+  
+        })
+        .catch(function(err){
+          // console.log("失败")
+          // console.log(err)
+          message.error('下一状态改变失败！')
+        })
     }
       
       

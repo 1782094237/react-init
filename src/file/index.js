@@ -16,7 +16,6 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import 'antd/dist/antd.css';
-const FileSaver = require('file-saver');
 moment.locale('zh-cn');
 const { confirm } = Modal;
 
@@ -33,6 +32,13 @@ Array.prototype.contains = function (obj) {
   return false;
 }
 class File extends Component{
+
+  constructor(props){
+    super(props)
+    this.state={
+      fileList:[]
+    }
+  }
 
   resetFile(){
     let nowFile = this.props.file;
@@ -146,19 +152,22 @@ class File extends Component{
   //     download2(blobUrl);
   // })
 
+  // download2(src)
+
   
       axios({
         method: 'GET',
         url: src,
-        responseType: 'blob'
-    }).then(res=>{
-        download2(res.data,name);
-        // let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
-        // let url = window.URL.createObjectURL(blob);
-        // window.location.href = url;
+        responseType: 'blob',
+        withCredentials:true
+    }).then((res) =>{
+
+      download2(res.data,name);
+
     }).catch(err=>{
         message.error("下载文件失败！")
     })
+
 
 
 
@@ -407,19 +416,19 @@ class File extends Component{
   getDelete(creatorId,fileId,type){
     // console.log("删除id"+creatorId)
     if(this.props.personal.identity.contains("组长") || creatorId == this.props.personal.id){
-      console.log(type)
-      console.log(creatorId)
-      console.log(this.props.personal.id)
+      // console.log(type)
+      // console.log(creatorId)
+      // console.log(this.props.personal.id)
 
       if(type == "文件夹"){
         return (  
-          <Popconfirm title="是否删除文件夹内所有文件？" okText="Yes" cancelText="No" onConfirm={this.deleteFile.bind(this,fileId,type)}>
+          <Popconfirm title="是否删除文件夹内所有文件？" okText="是" cancelText="否" onConfirm={this.deleteFile.bind(this,fileId,type)}>
             <a>删除</a>
           </Popconfirm>
         )   
       }else{
         return (
-          <Popconfirm title="是否删除文件？" okText="Yes" cancelText="No" onConfirm={this.deleteFile.bind(this,fileId,type)}>
+          <Popconfirm title="是否删除文件？" okText="是" cancelText="否" onConfirm={this.deleteFile.bind(this,fileId,type)}>
             <a>删除</a>
           </Popconfirm>
         )
@@ -515,7 +524,9 @@ class File extends Component{
    let that = this;
   confirm({
     title: '请输入文件夹名称',
-    content: <div><br/><Input id="floder" placeholder="Basic usage" /></div>,
+    okText:"确认",
+    cancelText:"取消",
+    content: <div><br/><Input id="floder" placeholder="文件夹名称" /></div>,
     onOk() {
       // console.log("执行xxxxxxxxxxxxxxxxxx")
       // console.log(idStack[idStack.length-1][0])
@@ -587,6 +598,48 @@ class File extends Component{
    )
  }
 
+ handleChange(info){
+   const that = this;
+
+    // console.log("执行")
+    let fileList = [...info.fileList];
+    // 1. Limit the number of uploaded files
+    // Only to show two recent uploaded files, and old ones will be replaced by the new
+    fileList = fileList.slice(-1);
+
+
+    this.setState({ fileList });
+
+
+    if (info.file.status !== 'uploading') {
+      // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+      // console.log(info.file)
+      // console.log(info.fileList);
+    }
+    if (info.file.status === 'done') {
+
+      console.log(info.file.response)
+
+      if(info.file.response.key != 1){
+        if(info.file.response.mes == '文件名重复'){
+          message.error(`${info.file.name} 文件名重复.`);
+        }else if(info.file.response.mes=='文件过大,文件大小不得超过10mb'){
+          message.error(`${info.file.name} 文件过大,文件大小不得超过10mb.`);
+        }else{
+          message.error(`${info.file.name} 上传失败.`);
+        }
+      }else{
+        // console.log("完成")
+        message.success(`${info.file.name} file uploaded successfully`);
+        that.getFile()
+      }
+    } else if (info.file.status === 'error') {
+      // console.log("失败")
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  
+ }
+
 
   render() {
     //后端 文件上传接口
@@ -601,38 +654,17 @@ class File extends Component{
         itemId:this.props.fileId,
         fatherId:idStack[idStack.length-1][0] 
       },
+      onChange: this.handleChange.bind(this),
+      beforeUpload(file, fileList){    
+        var size = file.size / 1024;
+        if(size > 10240){
+          message.error('图片大小不能超过10M');
+          return false;
+        }
+      }
       // headers: {
       //   authorization: 'authorization-text',
       // },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-          // console.log(info.file)
-          // console.log(info.fileList);
-        }
-        if (info.file.status === 'done') {
-
-
-          if(info.file.response.key != 1){
-            if(info.file.response.mes == '文件名重复'){
-              message.error(`${info.file.name} 文件名重复.`);
-            }else if(info.file.response.mes=='文件过大,文件大小不得超过10mb'){
-              message.error(`${info.file.name} 文件过大,文件大小不得超过10mb.`);
-            }else{
-              message.error(`${info.file.name} 上传失败.`);
-            }
-          }else{
-            // console.log("完成")
-            message.success(`${info.file.name} file uploaded successfully`);
-            that.getFile()
-          }
-
-
-        } else if (info.file.status === 'error') {
-          // console.log("失败")
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
     };
     return(
       
@@ -642,7 +674,7 @@ class File extends Component{
 
           <Col span="12"><Button onClick={this.newFloder.bind(this)}  className="up-file">新建文件夹</Button></Col>
           <Col span="12">
-            <Upload  {...props}>
+            <Upload  {...props} fileList={this.state.fileList}>
               <Button style={{display:'inline'}} className="up-file" type="primary">上传文件</Button>
             </Upload>
           </Col>

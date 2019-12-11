@@ -15,7 +15,7 @@ require('./static/icons/iconfont.js')
 // http://27y6v05022.wicp.vip:40292/
 // http://121.40.217.108:8080/
 localStorage.api = "http://121.40.217.108:8080/";
-console.log(localStorage.api)
+// console.log(localStorage.api)
 class App extends Component {
 
   render(){

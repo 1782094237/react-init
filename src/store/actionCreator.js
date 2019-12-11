@@ -83,6 +83,53 @@ export const setSecondLogin = (key) => ({
   value:key
 })
 
+export const setLoginValue = (key) => ({
+  type:actionTypes.LOGINVALUE,
+  value:key
+})
+
+export const setLoginVisible = (key) => ({
+  type:actionTypes.LOGINVISIBLE,
+  value:key
+})
+
+export const setTeacherItem = (key) => ({
+  type:actionTypes.TEACHERITEM,
+  value:key
+})
+
+export const setTeacherGroup = (key) => ({
+  type:actionTypes.TEACHERGROUP,
+  value:key
+})
+
+export const setTeacherNotice = (key) => ({
+  type:actionTypes.TEACHERNOTICE,
+  value:key
+})
+
+export const setTeacherNewNotice = (key) => ({
+  type:actionTypes.TEACHERNEWNOTICE,
+  value:key
+})
+
+export const setLoginRole = (key) => ({
+  type:actionTypes.LOGINROLE,
+  value:key
+})
+
+
+export const setTeacherToStudent = (key) => ({
+  type:actionTypes.TEACHERTOSTUDENT,
+  value:key
+})
+
+
+export const setTeacherId = (key) => ({
+  type:actionTypes.TEACHERID,
+  value:key
+})
+
 
 
 

@@ -224,8 +224,9 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
         <Modal
           visible={visible}
           width='60%'
-          title="任务详情"
+          title="任务详情（注：请任务负责人在任务完成后将相关文档以任务名_人名_时间的命名方式上传到文件管理）"
           okText="确认修改"
+          cancelText="取消"
           onCancel={onCancel}
           onOk={onOk}
         >
@@ -367,7 +368,8 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           visible={visible}
           width='60%'
           title="创建设计"
-          okText="Create"
+          okText="创建"
+          cancelText="取消"
           onCancel={onCancel}
           onOk={onOk}
         >
@@ -631,7 +633,7 @@ class Task_1 extends Component{
 
       
       axios.post(localStorage.api+'team/bigStatus',qs.stringify({
-        taskId:2,
+        taskId:this.props.taskData.getIn(['bigTasks',1,'id']),
         status:'已完成'
       }),{withCredentials:true}
       )
@@ -647,7 +649,7 @@ class Task_1 extends Component{
       })
 
       axios.post(localStorage.api+'team/bigStatus',qs.stringify({
-        taskId:3,
+        taskId:this.props.taskData.getIn(['bigTasks',2,'id']),
         status:'进行中'
       }),{withCredentials:true}
       )

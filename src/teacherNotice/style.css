@@ -1,10 +1,10 @@
-.notice-title{
+.teacher-notice-title{
     font-size: 1.2rem;
     font-weight: 700;
     text-align: left;
 }
 
-.notice-new{
+.teacher-notice-new{
   margin-right: 1rem;
   cursor: pointer;
   padding: 0 1.3rem !important;
@@ -12,30 +12,30 @@
   background-color: #202d40 !important;
 }
 
-.notice-new span{
+.teacher-notice-new span{
   color: white !important;
 }
 
-.notice-new:hover{
+.teacher-notice-new:hover{
   opacity: 0.8;
 }
 
-.notice-name{
+.teacher-notice-name{
   font-size:1rem;
   font-weight: 500;
 }
 
-.notice-subTitle{
+.teacher-notice-subTitle{
   text-align: left
 }
 
-.notice-subTitle h1 {
+.teacher-notice-subTitle h1 {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 1.2rem;
 }
 
-.notice-notice{
+.teacher-notice-notice{
   margin-top:.5rem
 }
 

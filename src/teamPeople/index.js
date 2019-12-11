@@ -42,7 +42,8 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
         <Modal
           visible={visible}
           title="编辑成员信息"
-          okText="Create"
+          okText="确认修改"
+          cancelText="取消"
           onCancel={onCancel}
           onOk={onOk}
         >
@@ -119,13 +120,13 @@ class TeamPeople extends Component{
 // userSex: "男"
     const columns = [
       {
-        title: 'Name',
+        title: '姓名',
         dataIndex: 'userName',
         key: 'userName',
         render: text => <a>{text}</a>,
       },
       {
-        title: 'Tags',
+        title: '分工',
         key: 'identity',
         dataIndex: 'identity',
         render:identity => (
@@ -154,12 +155,12 @@ class TeamPeople extends Component{
         ),
       },
       {
-        title: 'Class',
+        title: '班级',
         dataIndex: 'userClass',
         key: 'userClass',
       },  
       {
-        title: 'Edit',
+        title: '编辑',
         key: 'edit',
         render: (text, record) => {
           if(this.props.personal.identity.contains("组长")){

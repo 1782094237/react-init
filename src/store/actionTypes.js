@@ -37,3 +37,31 @@ export const TEAMINFO = 'login/teaminfo'
 //保存小组信息
 
 export const SECONDLOGIN = 'login/second/login'
+
+//登录用户账号密码
+export const LOGINVISIBLE = 'login/visible'
+
+//登录是否显示邮箱
+export const LOGINVALUE = 'login/values'
+
+//老师选择的item
+export const TEACHERITEM = 'teacher/item'
+
+//老师端小组的信息
+export const TEACHERGROUP = 'teacher/group'
+
+//老师端的通知
+export const TEACHERNOTICE = 'teacher/notice'
+
+//老师端新建通州
+export const TEACHERNEWNOTICE = 'teacher/new/notice'
+
+//个人角色
+export const LOGINROLE = 'login/role'
+
+//是否登陆上老师跳转到小组页面
+export const TEACHERTOSTUDENT = 'teacher/student'
+
+//保存老师登录信息
+export const TEACHERID = 'teacher/id'
+

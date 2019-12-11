@@ -17,10 +17,52 @@ import Axios from 'axios';
 moment.locale('zh-cn');
 const{ confirm } = Modal;
 
+
+
+
+const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
+  // eslint-disable-next-line
+  class extends React.Component {
+    render() {
+      const { visible, data, onCreate, onCancel, form } = this.props;
+      const { getFieldDecorator } = form;
+      return (
+        <Modal
+          visible={visible}
+          title="请输入邮箱以激活账号"
+          onCancel={onCancel}
+          onOk={onCreate}
+          okText="确认"
+          cancelText="取消"
+        >
+          <Form layout="vertical">
+            
+          <Form.Item label="请输入邮箱:">
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    type: 'email',
+                    message: '这不是一个有效的邮箱！',
+                  },
+                  {
+                    required: true,
+                    message: '请输入邮箱！',
+                  },
+                ],
+              })(<Input />)}
+          </Form.Item>
+
+          </Form>
+        </Modal>
+      );
+    }
+  },
+);
+
 class LoginForm extends Component{
 
 //登陸
-  getLogin(err,values,mail){
+  getLogin(values,mail){
     const that = this;
 //后端 登录接口
       let postData;
@@ -31,6 +73,7 @@ class LoginForm extends Component{
           userEmail: mail
         }
       }else{
+        that.props.handleSetLoginValue(values);
         postData = {          
           userAccount:values.username,
           userPassword:values.password
@@ -38,53 +81,49 @@ class LoginForm extends Component{
       }        
       axios.post(localStorage.api+'login',qs.stringify(postData),{withCredentials:true})
       .then(function(response){
-        if(response.data.key == 0 && response.data.errorInfo == "请输入邮箱以激活账号"){
+        // console.log(response)
+        if(response.data.key == 0 && response.data.mes == "请输入邮箱以激活账号"){
           //激活
-          const { getFieldDecorator } = this.props.form;
-                    confirm({
-                      title: '请输入邮箱以激活账号',
-                      content: 
-                      <Form>
-                         <Form.Item>
-                          {getFieldDecorator('email', {
-                            rules: [
-                              {
-                                type: 'email',
-                                message: 'The input is not valid E-mail!',
-                              },
-                              {
-                                required: true,
-                                message: 'Please input your E-mail!',
-                              },
-                            ],
-                          })(
-                            <Input
-                              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              placeholder="Email"
-                              id="mail"
-                            />,
-                          )}
-                        </Form.Item>
-                      </Form>                      
-                      ,
-                      onOk() {
-                        that.getLogin.call(that,err,values,document.getElementById("mail").value)
-                      },
-                      onCancel() {},
-                    });
+          that.props.handleSetLoginVisible(true);
         }else if(response.data.key == 0){
           //账号密码错误
-                    confirm({
-                      title: '登陆失败',
-                      content: <div><br/><p>账号或密码错误！</p></div>,
-                      onOk() {
-                      },
-                      onCancel() {},
-                    });
+                    // confirm({
+                    //   title: '登陆失败',
+                    //   content: <div><br/><p>账号或密码错误！</p></div>,
+                    //   okText: '确认',
+                    //   cancelText: '取消',
+                    //   onOk() {
+                    //   },
+                    //   onCancel() {},
+                    // });
+                    message.error("账号或密码错误！")
         }else{
           //登陆成功
           that.props.handleSetLogin(1);
           message.success('登陆成功！');
+
+
+          axios.get(localStorage.api+'userMes',{withCredentials:true})
+          .then((response) => {
+    
+              if(response.data.role == "学生"){
+
+              }else{
+                //老师
+                that.props.handleSetTeacherId({
+                  userAccount:values.username,
+                  userPassword:values.password
+                })
+              }
+  
+            }) 
+            .catch((error) => {
+              message.error('获取用户信息失败！')
+            })
+
+
+
+
         }
       })
       .catch(function(err){
@@ -99,11 +138,32 @@ class LoginForm extends Component{
     const that = this;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        that.getLogin.call(that,err,values);
+        that.getLogin.call(that,values);
       }
     });
   };
 
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
+  handleCreate(){
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      this.getLogin(this.props.loginValue,values.email)
+
+      form.resetFields();
+      this.props.handleSetLoginVisible(false);
+    });
+  }
+
+  handleCancle(){
+    this.props.handleSetLoginVisible(false);
+  }
 
 
   render() {
@@ -112,7 +172,7 @@ class LoginForm extends Component{
       <div className="login-container">
         
         <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
-          <div className="login-title">软件工程</div>
+          <div className="login-title">软件研发管理虚拟仿真平台</div>
           <Form.Item>
             {getFieldDecorator('username', {
               rules: [{ required: true, message: '请输入学号!' }],
@@ -140,17 +200,25 @@ class LoginForm extends Component{
             </Button>
           </Form.Item>
         </Form>
+        <CollectionCreateForm
+          wrappedComponentRef={this.saveFormRef.bind(this)}
+          visible={this.props.loginVisible}
+          data={this.props.loginValue}
+          onCancel={this.handleCancle.bind(this)}
+          onCreate={this.handleCreate.bind(this)}
+        />
       </div>
     );
   }
 }
 
-const Login = Form.create({ name: 'normal_login' })(LoginForm);
 
 const mapStateToProps = (state) => {
   return ({
     personal:state.getIn(['personal']),
-    teamInfo:state.getIn(['teamInfo'])
+    teamInfo:state.getIn(['teamInfo']),
+    loginValue:state.getIn(['loginValue']),
+    loginVisible:state.getIn(['loginVisible'])
     // itemNumber:state.getIn(['header','itemNumber'])
   })
 }
@@ -168,9 +236,23 @@ const mapDispatchToProps = (dispatch) => {
     handleSetTeamInfo(key){
         const action = actionCreator.setTeamInfo(key);
         dispatch(action);
+    },
+    handleSetLoginValue(key){
+      const action = actionCreator.setLoginValue(key);
+      dispatch(action);
+    },
+    handleSetLoginVisible(key){
+        // console.log("这里")
+        const action = actionCreator.setLoginVisible(key);
+        dispatch(action);
+    },
+    handleSetTeacherId(key){
+      const action = actionCreator.setTeacherId(key);
+      dispatch(action);
     }
     
   })
 }
 
+const Login = Form.create({ name: 'horizontal_login' })(LoginForm);
 export default connect(mapStateToProps,mapDispatchToProps)(Login)

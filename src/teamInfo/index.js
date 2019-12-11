@@ -65,25 +65,6 @@ const columns = [
   },
 ];
 
-const data = [ 
-  {
-    name: '巴方硕',
-    tags: ['组长'],
-  },
-  {
-
-    name: '陈小路',
-
-    tags: ['开发负责人'],
-  },
-  {
-
-    name: '何金超',
-
-    tags: ['组员'],
-  },
-
-];
 const setting = {
   hideOnSinglePage:true
 }
@@ -141,27 +122,7 @@ const taskColumns = [
   
 ];
 
-const taskData = [
-  {
 
-    name: '任务1',
-    people:"巴方硕",
-    tags: ['已完成'],
-  },
-  {
-
-    name: '任务2',
-    people:"巴方硕",
-    tags: ['进行中'],
-  },
-  {
-
-    name: '任务3',
-    people:"巴方硕",
-    tags: ['未开始'],
-  },
-
-];
 const taskSetting = {
   hideOnSinglePage:true,
 }
@@ -169,45 +130,48 @@ const taskSetting = {
 
 
 
-
-
-
-
-
-
 class TeamInfo extends Component{
+
+  constructor(props){
+    super(props)
+    this.state={
+      fileList:[]
+    }
+  }
+
   componentDidMount(){
 
     axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出")
-      console.log(resolve.data.bigTasks[0].smallTasks)
+      // console.log("数据输出")
+      // console.log(resolve.data.bigTasks[0].smallTasks)
       // let data = resolve.data.bigTasks.samllTasks;
-      resolve.data.bigTasks[0].smallTasks.reverse();
+      // resolve.data.bigTasks[0].smallTasks.reverse();
       // let data = resolve.data.bigTasks.samllTasks;
       this.props.handleSetTaskData(fromJS(resolve.data));
-      console.log("**************************")
+      // console.log("**************************")
     })
     .catch((error) => {
-
+      message.error('获取任务信息失败！')
     })
 
     axios.get(localStorage.api+'team/info',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       this.props.handleSetPeopleInfo(resolve.data)
 
     })
     .catch((error) => {
+      message.error('获取小组信息失败！')
     })
 
 
     axios.get(localStorage.api+'team/myNotice',{withCredentials:true})
     .then((resolve) => {
 
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       // let data = resolve.data.bigTasks.samllTasks;
       // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
 
@@ -215,12 +179,13 @@ class TeamInfo extends Component{
 
     })
     .catch((error) => {
+      message.error('获取通知失败！')
     })
 
     axios.get(localStorage.api+'/team/info',{withCredentials:true})
     .then((resolve) => {
-      console.log("数据输出11111")
-      console.log(resolve.data)
+      // console.log("数据输出11111")
+      // console.log(resolve.data)
       // let data = resolve.data.bigTasks.samllTasks;
       // this.props.handleSetTaskData(resolve.data.bigTasks[0].smallTasks)
 
@@ -228,6 +193,7 @@ class TeamInfo extends Component{
 
     })
     .catch((error) => {
+      message.error('获取任务信息失败！')
     })
   }
 
@@ -245,8 +211,8 @@ class TeamInfo extends Component{
         })
       }
     }
-    console.log("&&&&&&&&&&&&&&&&&&&&&&")
-    console.log(result)
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    // console.log(result)
     return result;
 
   //   <Timeline.Item >
@@ -269,8 +235,8 @@ class TeamInfo extends Component{
         })
       }
     }
-    console.log("&&&&&&&&&&&&&&&&&&&&&&")
-    console.log(result)
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    // console.log(result)
     return result;
   }
 
@@ -288,16 +254,16 @@ class TeamInfo extends Component{
         })
       }
     }
-    console.log("&&&&&&&&&&&&&&&&&&&&&&")
-    console.log(result)
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&")
+    // console.log(result)
     return result;
   }
 
   getStatge(){
-    console.log("获取状态成功+++++++++++")
-    console.log(this.props.taskData.getIn(['bigTasks']))
+    // console.log("获取状态成功+++++++++++")
+    // console.log(this.props.taskData.getIn(['bigTasks']))
     if(this.props.taskData.getIn(['bigTasks'])){
-      console.log("获取状态成功-------------")
+      // console.log("获取状态成功-------------")
 
     if(this.props.taskData.getIn(['bigTasks',0,'status']) == '进行中'){
       return 1;
@@ -314,8 +280,8 @@ class TeamInfo extends Component{
   }
 
   getStatgeName(name,number){
-    console.log("得到状态")
-    console.log(this.getStatge())
+    // console.log("得到状态")
+    // console.log(this.getStatge())
     if(this.getStatge() == number){
       return name+"--------进行中"
     }else if(this.getStatge() <= number){

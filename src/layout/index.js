@@ -1,6 +1,7 @@
 import React,{ Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { actionCreator } from '../store';
+import qs from 'qs';
 
 import axios from 'axios';
 
@@ -27,6 +28,8 @@ import File_2 from '../file_2';
 import File_3 from '../file_3';
 
 import File_4 from '../file_4';
+
+import File_5 from '../file_5';
 
 import TeamInfo from '../teamInfo';
 
@@ -88,14 +91,18 @@ class Lay extends Component{
       );
       break;
       case '10': content = (
+        <File_5 ></File_5>
+      );
+      break;
+      case '11': content = (
         <TeamInfo />
       );
       break;
-      case '11': content =(
+      case '12': content =(
         <Notice></Notice>
       )
       break;
-      case '12': content = (
+      case '13': content = (
         <TeamPeople />
       );
       break;
@@ -152,7 +159,7 @@ componentDidMount(){
       axios.get(localStorage.api+'team/subjectInfo',{withCredentials:true})
       .then((resolve) => {
         // console.log("数据输出888888888888888888888888888")
-        resolve.data.bigTasks[0].smallTasks.reverse();
+        // resolve.data.bigTasks[0].smallTasks.reverse();
         // console.log(resolve.data)
         // console.log(resolve.data.bigTasks[0].smallTasks)
 
@@ -177,6 +184,47 @@ lgout(){
     })
 }
 
+backHome(){
+  const that = this;
+  if(this.props.teacherToStudent){
+    this.lgout();
+    let postData = {
+      userAccount:this.props.teacherId.userAccount,
+      userPassword:this.props.teacherId.userPassword
+    }
+
+    axios.post(localStorage.api+'login',qs.stringify(postData),{withCredentials:true})
+    .then(function(response){
+      // console.log(response)
+      if(response.data.key == 0){
+        //账号密码错误
+        message.error("账号或密码错误！")
+      }else{
+        //登陆成功
+        that.props.handleSetTeacherToStudent(false);
+        that.props.handleSetLogin(1);
+        // message.success('登陆成功！');
+      }
+    })
+    .catch(function(err){
+      message.error('登陆失败！');
+      // that.props.handleSetLogin(1);
+    })
+
+  }
+}
+
+lgout(){
+  axios.get(localStorage.api+"logout",{withCredentials:true})
+    .then((resolve) => {
+      this.props.handleSetLogin(0)
+      // message.success('注销成功！')
+    })
+    .catch((error) => {
+      message.error('注销失败！')
+    })
+}
+
 
   render() {
 
@@ -193,14 +241,14 @@ lgout(){
     return(
       <Layout >
         <div className = "lay-container  web-font">
-          <div className = "home-container">
+          <div onClick={this.backHome.bind(this)} className = "home-container">
             <svg className="home-icon" aria-hidden="true">
                 <use xlinkHref="#icon-shouye1"></use>
             </svg>
           </div>
 
           <div className = "home-name">
-            软件工程
+            软件研发管理虚拟仿真平台
           </div>
 
         <div className = "right-container">
@@ -231,7 +279,7 @@ lgout(){
         className="lay-sider"
       >
 
-        <Menu style={{background:'#202d40'}}  theme="dark" mode="inline" onClick={this.props.handleSelectItem.bind(this)} defaultOpenKeys={['sub1','sub2','sub3']} defaultSelectedKeys={['10']}>
+        <Menu style={{background:'#202d40'}}  theme="dark" mode="inline" onClick={this.props.handleSelectItem.bind(this)} defaultOpenKeys={['sub1','sub2','sub3']} defaultSelectedKeys={['11']}>
           <Menu.Item key = '0' className="lay-group">
               <svg className="group-icon" aria-hidden="true">
                 <use xlinkHref="#icon-dateboard"></use>
@@ -263,6 +311,7 @@ lgout(){
               <Menu.Item className="sub-item" key="7">设计文档</Menu.Item>
               <Menu.Item className="sub-item" key="8">实现文档</Menu.Item>
               <Menu.Item className="sub-item" key="9">测试文档</Menu.Item>
+              <Menu.Item className="sub-item" key="10">其他文档</Menu.Item>
             </SubMenu>
 
             <SubMenu
@@ -275,9 +324,9 @@ lgout(){
                 </span>
               }
             >
-              <Menu.Item className="sub-item" key="10">项目概况</Menu.Item>
-              <Menu.Item className="sub-item" key="11">项目通知</Menu.Item>
-              <Menu.Item className="sub-item" key="12">成员管理</Menu.Item>
+              <Menu.Item className="sub-item" key="11">项目概况</Menu.Item>
+              <Menu.Item className="sub-item" key="12">项目通知</Menu.Item>
+              <Menu.Item className="sub-item" key="13">成员管理</Menu.Item>
             </SubMenu>
         </Menu>
       </Sider>
@@ -303,7 +352,9 @@ const mapStateToProps = (state) => {
     personal:state.getIn(['personal']),
     teamInfo:state.getIn(['teamInfo']),
     taskData:state.getIn(['taskData']),
-    login:state.getIn(['login'])
+    login:state.getIn(['login']),
+    teacherId:state.getIn(['teacherId']),
+    teacherToStudent:state.getIn(['teacherToStudent'])
   })
 }
 
@@ -320,6 +371,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     handleSetLogin(value){
       const action = actionCreator.setLogin(value);
+      dispatch(action);
+    },
+    handleSetTeacherToStudent(value){
+      const action = actionCreator.setTeacherToStudent(value);
       dispatch(action);
     }
   })
