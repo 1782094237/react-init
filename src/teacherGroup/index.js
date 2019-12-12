@@ -195,8 +195,11 @@ class TeacherGroup extends Component{
 
   inGroup(id){
     console.log(id)
+    let data = {
+      groupId:id
+    }
     const that = this;
-    axios.post(localStorage.api+'teacher/teamAccount',qs.stringify(id),{withCredentials:true})
+    axios.post(localStorage.api+'teacher/teamAccount',qs.stringify(data),{withCredentials:true})
     .then(function(response){
       console.log(response.data.id)
       that.lgout();
