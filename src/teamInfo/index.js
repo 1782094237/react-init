@@ -297,8 +297,13 @@ class TeamInfo extends Component{
       <Fragment>
         <Row>
           <Col span={16}>
-          <div className="info-title">
-              {this.props.teamInfo.teamTitle}
+          <div className="info-left">
+              系统名称：
+              <i className="info-title">{this.props.teamInfo.teamTitle.split("<br/>")[0].split("系统名称：")[1]}</i>
+            </div>
+            <div className="info-left">
+             需求背景：
+              <i className="info-title">{this.props.teamInfo.teamTitle.split("<br/>")[1].split("需求背景：")[1]}</i>
             </div>
             <div className="info-left">
               项目动态
