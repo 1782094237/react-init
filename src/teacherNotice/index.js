@@ -240,13 +240,13 @@ class TeacherNotice extends Component{
 
   getTeacherTimeItem(){
     let result = [];
-    console.log("********")
-    console.log(this.props.teacherNotice)
+    // console.log("********")
+    // console.log(this.props.teacherNotice)
     if(this.props.teacherNotice.notices){
       if(this.props.teacherNotice.notices.size!==0){
         this.props.teacherNotice.notices.map((value,index) => {
           result.push(
-                <Timeline.Item className="teacher-notice-top">
+                <Timeline.Item key = {value.time} className="teacher-notice-top">
                   <p><a>老师</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;<a>全体成员</a> {value.time.slice(11,19)} </p>
                   <a onClick={this.deleteNotice.bind(this,value.id)} style={{float:'right'}}>删除</a>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />

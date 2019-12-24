@@ -286,11 +286,11 @@ const CollectionCreateForm_1 = Form.create({ name: 'form_in_modal' })(
                     // onChange={this.handleSelectChange}
                     disabled={ personal.identity.contains("组长") || personal.identity.contains("需求负责人") || (personal.id == data.worker) ? false : true}
                   >
-                    <Option value="未开始">未开始</Option>
-                    <Option value="进行中">进行中</Option>
-                    <Option value="待审核">待审核</Option>
+                    <Option key = "0" value="未开始">未开始</Option>
+                    <Option key = "1" value="进行中">进行中</Option>
+                    <Option key = "2" value="待审核">待审核</Option>
                     {
-                      personal.identity.contains("组长") || personal.identity.contains("测试负责人") == true ?<Option value="已完成" >已完成</Option>:null
+                      personal.identity.contains("组长") || personal.identity.contains("测试负责人") == true ?<Option key = "3" value="已完成" >已完成</Option>:null
                     }
                     
                   </Select>,
@@ -691,7 +691,7 @@ class Task_3 extends Component{
         this.props.peopleInfo.studentsInfo.map((value,index) => {
         // console.log(value)
         result.push(
-        <Option value={value.userId}>{value.userName}</Option>
+        <Option key ={value.userId} value={value.userId}>{value.userName}</Option>
         )
       })
       }
@@ -734,7 +734,7 @@ class Task_3 extends Component{
           </Col>
 
         </Row>
-        <Table className="task-table" columns={columns} dataSource = {this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',3,'smallTasks']).toJS() }  pagination={setting}         
+        <Table rowKey="id" className="task-table" columns={columns} dataSource = {this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',3,'smallTasks']).toJS() }  pagination={setting}         
            onRow={(record,rowkey)=>{
              return{
                onClick : this.selectTable.bind(this,record,rowkey)    //点击行 record 指的本行的数据内容，rowkey指的是本行的索引         

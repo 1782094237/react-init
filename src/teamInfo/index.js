@@ -203,7 +203,7 @@ class TeamInfo extends Component{
       if(this.props.notice.size!==0){
         this.props.notice.groupNotice.map((value,index) => {
           result.push(
-                <Timeline.Item className="notice-top">
+                <Timeline.Item key = { value.time } className="notice-top">
                   <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
@@ -227,7 +227,7 @@ class TeamInfo extends Component{
       if(this.props.notice.size!==0){
         this.props.notice.teacherNotice.map((value,index) => {
           result.push(
-                <Timeline.Item className="notice-top">
+                <Timeline.Item key = { value.time } className="notice-top">
                   <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
@@ -246,7 +246,7 @@ class TeamInfo extends Component{
       if(this.props.notice.size!==0){
         this.props.notice.myNotice.map((value,index) => {
           result.push(
-                <Timeline.Item className="notice-top">
+                <Timeline.Item key = { value.time } className="notice-top">
                   <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
@@ -321,7 +321,7 @@ class TeamInfo extends Component{
           <Col span={8}>
             <div className="info-box ">
               项目成员
-              <Table showHeader={false} className="info-table" columns={columns} dataSource={this.props.peopleInfo.studentsInfo} pagination={setting} />
+              <Table rowKey="userId" showHeader={false} className="info-table" columns={columns} dataSource={this.props.peopleInfo.studentsInfo} pagination={setting} />
             </div>
             <div className="info-box">
               项目进度
@@ -332,18 +332,18 @@ class TeamInfo extends Component{
                 expandIcon={({ isActive }) => <Icon type="caret-right" rotate={isActive ? 90 : 0} />}
               >
                 <Panel  header={"需求 —— "+this.props.taskData.getIn(['bigTasks',0,'status'])} key="1" style={customPanelStyle}>
-                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',0,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',0,'smallTasks']).toJS()} pagination={taskSetting} />
                 </Panel>
                 <Panel header={"设计 —— "+this.props.taskData.getIn(['bigTasks',1,'status'])} key="2" style={customPanelStyle}>
-                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',1,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',1,'smallTasks']).toJS()} pagination={taskSetting} />
 
                 </Panel>
                 <Panel header={"开发 —— "+this.props.taskData.getIn(['bigTasks',2,'status'])}  key="3" style={customPanelStyle}>
-                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',2,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',2,'smallTasks']).toJS()} pagination={taskSetting} />
 
                 </Panel>
                 <Panel header={"测试 —— "+this.props.taskData.getIn(['bigTasks',3,'status'])}  key="4" style={customPanelStyle}>
-                <Table className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',3,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="info-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.taskData.getIn(['bigTasks']) == null ? null : this.props.taskData.getIn(['bigTasks',3,'smallTasks']).toJS()} pagination={taskSetting} />
 
                 </Panel>
               </Collapse>

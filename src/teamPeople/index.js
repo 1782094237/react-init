@@ -173,7 +173,7 @@ class TeamPeople extends Component{
     ];
     return(
       <Fragment>
-        <Table columns={columns} pagination={setting} dataSource={this.props.peopleInfo.studentsInfo}
+        <Table columns={columns} pagination={setting} rowKey="userId" dataSource={this.props.peopleInfo.studentsInfo}
            onRow={(record,rowkey)=>{
              if(this.props.personal.identity.contains("组长")){
                return {

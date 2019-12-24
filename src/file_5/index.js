@@ -494,7 +494,7 @@ class File_5 extends Component{
           <Col span={3}>
             <Icon style={{lineHeight:'2.2rem',
             
-            display:array.getIn([i,'type']) !== "文件夹"  ? '':'none'
+            display:array.getIn([i,'type']) !== "文件夹" && this.getDown(array.getIn([i,'name'])) == true  ? '':'none'
             
             }} onClick={this.download.bind(this,array.getIn([i,'src']),array.getIn([i,'name']))} type="arrow-down" /> 
           </Col>
@@ -641,7 +641,7 @@ class File_5 extends Component{
     const props = {
       name: 'upload',
       action: localStorage.api+'files/upload',
-      withCredentials:'true',
+      withCredentials:true,
       showUploadList:{ showPreviewIcon: false, showRemoveIcon: false, showDownloadIcon: false },
       data:{
         itemId:this.props.fileId,

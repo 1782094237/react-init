@@ -122,13 +122,13 @@ class Notice extends Component{
   }
 
   getOption(){
-    const result = [<Option value='0'>全组人员</Option>];
+    const result = [<Option key = '0' value='0'>全组人员</Option>];
     if(this.props.peopleInfo){
       if( this.props.peopleInfo.size !== 0){
         this.props.peopleInfo.studentsInfo.map((value,index) => {
         // console.log(value)
         result.push(
-        <Option value={value.userId}>{value.userName}</Option>
+        <Option key = {value.userId} value={value.userId}>{value.userName}</Option>
         )
       })
       }
@@ -261,7 +261,7 @@ class Notice extends Component{
       if(this.props.notice.size!==0){
         this.props.notice.groupNotice.map((value,index) => {
           result.push(
-                <Timeline.Item className="notice-top">
+                <Timeline.Item key = { value.time } className="notice-top">
                   <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
@@ -285,7 +285,7 @@ class Notice extends Component{
       if(this.props.notice.size!==0){
         this.props.notice.teacherNotice.map((value,index) => {
           result.push(
-                <Timeline.Item className="notice-top">
+                <Timeline.Item key = { value.time } className="notice-top">
                   <p><a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} </p>
                   <p dangerouslySetInnerHTML={{ __html: value.content }}  />
                 </Timeline.Item>
@@ -337,7 +337,7 @@ class Notice extends Component{
       if(this.props.notice.size!==0){
         this.props.notice.myNotice.map((value,index) => {
           result.push(
-                <Timeline.Item className="notice-top">
+                <Timeline.Item key = { value.time } className="notice-top">
                   <p>
                     <a>{value.creatorName}</a>&nbsp;&nbsp;to&nbsp;&nbsp;<a>{value.receiverName}</a>&nbsp;&nbsp;{value.time.slice(0,10)} {value.time.slice(11,19)} 
                     <a onClick={this.deleteNotice.bind(this,value.id)} style={{float:'right'}}>删除</a>

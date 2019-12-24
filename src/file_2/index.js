@@ -647,7 +647,7 @@ class File_2 extends Component{
     const props = {
       name: 'upload',
       action: localStorage.api+'files/upload',
-      withCredentials:'true',
+      withCredentials:true,
       showUploadList:{ showPreviewIcon: false, showRemoveIcon: false, showDownloadIcon: false },
       data:{
         itemId:this.props.fileId,
@@ -671,8 +671,8 @@ class File_2 extends Component{
       <div className="file-button">
         <Row>
 
-          <Col span="12"><Button onClick={this.newFloder.bind(this)}  className="up-file">新建文件夹</Button></Col>
-          <Col span="12">
+          <Col span={12}><Button onClick={this.newFloder.bind(this)}  className="up-file">新建文件夹</Button></Col>
+          <Col span={12}>
             <Upload  {...props} fileList={this.state.fileList}>
               <Button style={{display:'inline'}} className="up-file" type="primary">上传文件</Button>
             </Upload>

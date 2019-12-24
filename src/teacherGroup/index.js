@@ -194,14 +194,14 @@ class TeacherGroup extends Component{
   }
 
   inGroup(id){
-    console.log(id)
+    // console.log(id)
     let data = {
       groupId:id
     }
     const that = this;
     axios.post(localStorage.api+'teacher/teamAccount',qs.stringify(data),{withCredentials:true})
     .then(function(response){
-      console.log(response.data.id)
+      // console.log(response.data.id)
       that.lgout();
       let postData = {          
         userAccount:response.data.id,
@@ -256,7 +256,7 @@ class TeacherGroup extends Component{
     if(this.props.teacherGroup.getIn(['groups'])){
     for(let i = 0; i<this.props.teacherGroup.getIn(['groups']).size; i++){
       result.push(
-      <Row className="teacher-row">
+      <Row key = {this.props.teacherGroup.getIn(['groups',i,'teamInfo','teamName'])} className="teacher-row">
           <Col className="teacher-col" span = {8}>
           <Descriptions
             bordered
@@ -277,18 +277,18 @@ class TeacherGroup extends Component{
                 expandIcon={({ isActive }) => <Icon type="caret-right" rotate={isActive ? 90 : 0} />}
               >
                 <Panel  header={"需求 —— "+this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',0,'status'])} key="1" style={customPanelStyle}>
-                <Table className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',0,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',0,'smallTasks']).toJS()} pagination={taskSetting} />
                 </Panel>
                 <Panel header={"设计 —— "+this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',1,'status'])} key="2" style={customPanelStyle}>
-                <Table className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',1,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',1,'smallTasks']).toJS()} pagination={taskSetting} />
 
                 </Panel>
                 <Panel header={"开发 —— "+this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',2,'status'])}  key="3" style={customPanelStyle}>
-                <Table className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',2,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',2,'smallTasks']).toJS()} pagination={taskSetting} />
 
                 </Panel>
                 <Panel header={"测试 —— "+this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',3,'status'])}  key="4" style={customPanelStyle}>
-                <Table className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',3,'smallTasks']).toJS()} pagination={taskSetting} />
+                <Table rowKey="id" className="teacher-panel-table" showHeader={false}  columns={taskColumns} dataSource={this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks']) == null ? null : this.props.teacherGroup.getIn(['groups',i,'taskInfo','bigTasks',3,'smallTasks']).toJS()} pagination={taskSetting} />
 
                 </Panel>
               </Collapse>
@@ -297,7 +297,7 @@ class TeacherGroup extends Component{
           <Col className="teacher-col" span = {8}>
             <div className="teacher-box ">
               项目成员
-              <Table showHeader={false} className="teacher-table" columns={columns} dataSource={this.props.teacherGroup.getIn(['groups']) ? this.props.teacherGroup.getIn(['groups',i,'studentsInfo']).toJS() : null} pagination={setting} />
+              <Table rowKey="userId" showHeader={false} className="teacher-table" columns={columns} dataSource={this.props.teacherGroup.getIn(['groups']) ? this.props.teacherGroup.getIn(['groups',i,'studentsInfo']).toJS() : null} pagination={setting} />
             </div>
           </Col>
         </Row>
@@ -331,7 +331,7 @@ class TeacherGroup extends Component{
     const props = {
       name: 'excelFile',
       action: localStorage.api+'teacher/updateExcel',
-      withCredentials:'true',
+      withCredentials:true,
       showUploadList:{ showPreviewIcon: false, showRemoveIcon: false, showDownloadIcon: false },
       data:{
         key:1,
@@ -371,8 +371,8 @@ class TeacherGroup extends Component{
       <Fragment>
         <div className="teacher-button">
           <Row>
-            <Col span="12"><Button onClick={this.download.bind(this)} className="teacher-up-file">下载信息</Button></Col>
-            <Col span="12">
+            <Col span={12}><Button onClick={this.download.bind(this)} className="teacher-up-file">下载信息</Button></Col>
+            <Col span={12}>
               <Upload  {...props} fileList={this.state.fileList} >
                 <Button style={{display:'inline'}} className="teacher-up-file" type="primary">上传信息</Button>
               </Upload>
